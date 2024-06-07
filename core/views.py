@@ -1,6 +1,10 @@
 from django.shortcuts import render
 
+from venues.models import Venue
+
 
 # Create your views here.
 def index(request):
-    return render(request, 'core/index.html')
+    venues_list = Venue.objects.all()
+    context = {'venues_list': venues_list}
+    return render(request, 'core/index.html', context=context)
