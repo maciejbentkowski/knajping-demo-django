@@ -1,1 +1,15 @@
 This is all venues page
+
+<ul>
+    {% for venue in venues %}
+        <div>
+            <h3>
+                <a href="{% url 'venues:detail' venue.id %}">{{ venue.name }}</a>
+            </h3>
+            <div>
+                <a href="{% url 'venues:update-venue' venue.id %}">Edit</a>
+                <a href="{% url 'venues:delete-venue' venue.id %}">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+</ul>
