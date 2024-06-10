@@ -12,9 +12,9 @@ def index(request):
     return render(request, 'venues/index.html', context)
 
 
-def detail(request, venue_id):
+def detail(request, pk):
     try:
-        venue = Venue.objects.get(pk=venue_id)
+        venue = Venue.objects.get(id = pk)
     except Venue.DoesNotExist:
         raise Http404("Venue does not exist")
     return render(request, "venues/detail.html", {"venue": venue})
