@@ -8,7 +8,7 @@ from .models import Venue
 def venues(request):
     venues_all = Venue.objects.all()
     context = {'venues_all': venues_all}
-    return render(request, 'venues/venue.html', context = context)
+    return render(request, 'venues/index.html', context=context)
 
 
 def detail(request, venue_id):

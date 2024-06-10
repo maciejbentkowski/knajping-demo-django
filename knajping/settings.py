@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
     'venues'
 ]
 
@@ -57,8 +56,7 @@ ROOT_URLCONF = 'knajping.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'core/templates'),
-                 os.path.join(BASE_DIR, 'venues/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'venues/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
