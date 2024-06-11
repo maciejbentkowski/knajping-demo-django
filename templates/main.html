@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static tailwind_tags %}
 <html lang="en">
 
 <head>
@@ -9,12 +9,14 @@
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
     <title>StudyBuddy - Find study partners around the world!</title>
+    {% tailwind_css %}
 </head>
 
 <body>
 
     <div>
         <h2>THIS IS MAIN SITE</h2>
+        <h3> This is additional text</h3>
     </div>
     {% block content %}
 
