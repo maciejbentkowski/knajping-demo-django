@@ -18,12 +18,18 @@
           <li class="mb-4 lg:mb-0 lg:pe-2">
             <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:venues'%}">Venues</a>
           </li>
-          <li class="mb-4 lg:mb-0 lg:pe-2">
-            <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="#!">Pricing</a>
-          </li>
-          <li class="mb-2 lg:mb-0 lg:pe-2">
-            <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="#!">About</a>
-          </li>
+          {% if request.user.is_authenticated %}
+              <li class="mb-4 lg:mb-0 lg:pe-2">
+                  <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:logout'%}">Logout</a>
+              </li>
+          {% else %}
+            <li class="mb-4 lg:mb-0 lg:pe-2">
+                <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:login'%}">Sign In</a>
+            </li>
+            <li class="mb-4 lg:mb-0 lg:pe-2">
+                <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:register'%}">Sign Up</a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>

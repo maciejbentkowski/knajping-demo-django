@@ -4,6 +4,11 @@ from . import views
 app_name = "venues"
 
 urlpatterns = [
+
+    path('login/', views.create_session, name="login"),
+    path('logout/', views.destroy_session, name="logout"),
+    path('register/', views.register_user, name="register"),
+
     path('', views.index, name='index'),
     path('venues/', views.venues, name='venues'),
     path('venues/<str:pk>/', views.detail, name='detail'),
