@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -16,3 +17,13 @@ class Venue(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Comment(models.Model):
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="comments")
+
+    def __str__(self):
+        return self.text

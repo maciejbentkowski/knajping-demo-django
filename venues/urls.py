@@ -16,4 +16,6 @@ urlpatterns = [
     path('create-venue/', views.create_venue, name='create-venue'),
     path('update-venue/<str:pk>/', views.update_venue, name='update-venue'),
     path('delete-venue/<str:pk>/', views.delete_venue, name='delete-venue'),
+
+    path('delete-comment/<str:pk>/', views.delete_comment, name='delete-comment'),
 ]

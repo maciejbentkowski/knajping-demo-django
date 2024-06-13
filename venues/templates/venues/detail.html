@@ -3,4 +3,33 @@
 {% block content %}
 {{ venue }}
 
+
+    <div>
+    <h3>
+        Comments:
+    </h3>
+    </div>
+    <div>
+        {% for comment in comments %}
+            <div>{{ comment.text }} </div>
+            <form method="POST" action="{% url 'venues:delete-comment' comment.id %}">
+                {% csrf_token %}
+                <input type="submit" value="Delete">
+            </form>
+        {% endfor %}
+
+    </div>
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label>
+            <input type="text" name="text" placeholder="Write comment">
+        </label>
+        <input type="submit" value="Submit">
+
+    </form>
+</div>
+
+
 {% endblock content %}

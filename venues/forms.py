@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Venue
+from .models import Venue, Comment
 
 
 class VenueForm(ModelForm):

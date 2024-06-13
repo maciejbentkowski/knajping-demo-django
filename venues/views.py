@@ -5,11 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Venue
+from .models import Venue, Comment
 from .forms import VenueForm
-
-
-# Create your views here.
 
 
 def create_session(request):
@@ -22,8 +19,8 @@ def create_session(request):
         password = request.POST.get('password')
 
         try:
-            user = User.objects.get(username=username)
-        except:
+            username == User.objects.get(username=username)
+        except Exception:
             messages.error(request, "User does not exist")
 
         user = authenticate(request, username=username, password=password)
@@ -68,16 +65,29 @@ def index(request):
 
 
 def detail(request, pk):
+    venue = Venue.objects.get(pk=pk)
+    comments = venue.comments.all()
     try:
         venue = Venue.objects.get(id=pk)
     except Venue.DoesNotExist:
         raise Http404("Venue does not exist")
-    return render(request, "venues/detail.html", {"venue": venue})
+
+    if request.method == 'POST':
+        Comment.objects.create(
+            user=request.user,
+            venue=venue,
+            text=request.POST.get('text')
+        )
+        return redirect('venues:detail', pk=venue.pk)
+
+    context = {"venue": venue,
+               "comments": comments}
+    return render(request, "venues/detail.html", context)
 
 
 def venues(request):
-    venues = Venue.objects.all()
-    context = {'venues': venues}
+    venues_list = Venue.objects.all()
+    context = {'venues': venues_list}
     return render(request, 'venues/venues.html', context)
 
 
@@ -115,3 +125,16 @@ def delete_venue(request, pk):
         venue.delete()
         return redirect('venues:venues')
     return render(request, 'venues/delete.html', {'obj': venue})
+
+
+def delete_comment(request, pk):
+    comment = Comment.objects.get(id=pk)
+
+    if request.user != comment.user:
+        messages.error(request, "You do not have permission to delete this comment")
+
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('venues:detail', pk=comment.venue.pk)
+    else:
+        return render(request, 'venues/detail.html')
