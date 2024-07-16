@@ -21,6 +21,7 @@
     </div>
 
 <div>
+    {% if request.user.is_authenticated %}
     <form method="POST" action="">
         {% csrf_token %}
         <label>
@@ -29,6 +30,7 @@
         <input type="submit" value="Submit">
 
     </form>
+    {% endif %}
 </div>
 
 
