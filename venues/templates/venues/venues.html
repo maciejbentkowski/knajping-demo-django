@@ -1,6 +1,6 @@
 {% extends 'main.html' %}
 This is all venues page
-
+ds
 {% block content %}
     <div class="mt-5 mx-10">
     <div class="grid grid-cols-3 gap-4">
@@ -13,10 +13,10 @@ This is all venues page
                     </div>
                 </a>
                 </div>
-                <div class="p-6 text-surface dark:text-blue-700">
+                <div class="p-6 text-surface">
                     <h3 class="mb-2 text-xl font-medium leading-tight"><a href="{% url 'venues:detail' venue.id %}">{{ venue.name }}</a>
                     </h3>
-                    <div>
+                    <div class="dark:text-blue-700">
                         {% for category in venue.categories.all %}
                             {{ category.name }}
                             {% endfor %}
