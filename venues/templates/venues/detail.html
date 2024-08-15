@@ -1,37 +1,52 @@
 {% extends 'main.html' %}
 
 {% block content %}
-{{ venue }}
 
 
-    <div>
-    <h3>
-        Comments:
-    </h3>
-    </div>
-    <div>
-        {% for comment in comments %}
-            <div>{{ comment.text }} </div>
-            <form method="POST" action="{% url 'venues:delete-comment' comment.id %}">
-                {% csrf_token %}
-                <input type="submit" value="Delete">
-            </form>
-        {% endfor %}
+    <div class="grid grid-rows-3 grid-flow-row gap-4 mt-4 mx-10">
+    <div class="row-span-2 col-span-1">
+        <div>
+            <h2 class="text-3xl">{{ venue }}</h2>
+            <div class="mt-2">
+                <p>Categories:</p>
+                {% for category in venue.categories.all %}
+                    {{ category.name }}
+                {% endfor %}
+            </div>
+        </div>
 
     </div>
-
-<div>
-    {% if request.user.is_authenticated %}
-    <form method="POST" action="">
-        {% csrf_token %}
-        <label>
-            <input type="text" name="text" placeholder="Write comment">
-        </label>
-        <input type="submit" value="Submit">
-
-    </form>
-    {% endif %}
-</div>
-
+        <div class="row-span-6 col-span-3">VENUE MENU, IMAGES HERE in cards menu</div>
+        <div class="border-2 row-span-3 col-span-4 p-3">
+            <div>
+                <h3>
+                    Comments:
+                </h3>
+                {% for comment in comments %}
+                    <div class="border-2 mt-3 px-3 py-2">
+                        <div>{{ comment.user }}: </div>
+                        <div class=" mt-2 italic">{{ comment.text }} </div>
+                        {% if request.user.is_authenticated and request.user == comment.user %}
+                    <form method="POST" action="{% url 'venues:delete-comment' comment.id %}">
+                    {% csrf_token %}
+                    <input class="mt-2 text-red-700" type="submit" value="Delete">
+                    </form>
+                    {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        <div>
+            {% if request.user.is_authenticated %}
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <label>
+                        <input class="mt-2" type="text" name="text" placeholder="Write comment">
+                    </label>
+                    <input type="submit" value="Submit">
+                </form>
+            {% endif %}
+        </div>
+        </div>
+    </div>
 
 {% endblock content %}
