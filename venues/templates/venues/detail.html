@@ -36,6 +36,7 @@
                 </h3>
                 {% for comment in comments %}
                     <div class="border-2 mt-3 px-3 py-2">
+                        <div class="float">Rate: {{comment.user_rating}} </div>
                         <div>{{ comment.user }}: </div>
                         <div class=" mt-2 italic">{{ comment.text }} </div>
                         {% if request.user.is_authenticated and request.user == comment.user %}

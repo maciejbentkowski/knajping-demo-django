@@ -67,9 +67,13 @@ def index(request):
 def detail(request, pk):
     venue = Venue.objects.get(pk=pk)
     comments = venue.comments.all()
-    rating = Rating.objects.get(pk=request.user.id)
-    rating_form = RatingForm(initial={'rating': f'{rating}'})
+    rating_form = RatingForm(initial={'rating':Rating.user_individual_rating(request.user, venue)})
     comment_form = CommentForm()
+    try:
+        rating = Rating.objects.get(user = request.user.id)
+    except:
+        rating = None
+        
     try:
         venue = Venue.objects.get(id=pk)
     except Venue.DoesNotExist:
@@ -82,14 +86,16 @@ def detail(request, pk):
             text=request.POST.get('text')
         )
         return redirect('venues:detail', pk=venue.pk)
-    
+
+        
     if request.method == 'POST' and 'rating_update' in request.POST:
-        Rating.objects.filter(pk=rating.user_id).update(
-            user=request.user,
-            venue=venue,
-            rating = request.POST.get('rating')
-        )
+        Rating.objects.update_or_create(
+                user=request.user,
+                venue=venue,
+                defaults={"rating": request.POST.get('rating')},
+            )
         return redirect('venues:detail', pk=venue.pk)
+
 
     context = {"venue": venue,
                "comments": comments,
