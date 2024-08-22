@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Venue, Comment, Category
-from .forms import VenueForm
+from .models import Venue, Comment, Category, Rating
+from .forms import VenueForm, RatingForm, CommentForm
 
 
 def create_session(request):
@@ -67,21 +67,35 @@ def index(request):
 def detail(request, pk):
     venue = Venue.objects.get(pk=pk)
     comments = venue.comments.all()
+    rating = Rating.objects.get(pk=request.user.id)
+    rating_form = RatingForm(initial={'rating': f'{rating}'})
+    comment_form = CommentForm()
     try:
         venue = Venue.objects.get(id=pk)
     except Venue.DoesNotExist:
         raise Http404("Venue does not exist")
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 'comment_add' in request.POST:
         Comment.objects.create(
             user=request.user,
             venue=venue,
             text=request.POST.get('text')
         )
         return redirect('venues:detail', pk=venue.pk)
+    
+    if request.method == 'POST' and 'rating_update' in request.POST:
+        Rating.objects.filter(pk=rating.user_id).update(
+            user=request.user,
+            venue=venue,
+            rating = request.POST.get('rating')
+        )
+        return redirect('venues:detail', pk=venue.pk)
 
     context = {"venue": venue,
-               "comments": comments}
+               "comments": comments,
+               "rating_form": rating_form,
+               "comment_form": comment_form
+               }
     return render(request, "venues/detail.html", context)
 
 

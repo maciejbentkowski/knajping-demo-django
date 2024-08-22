@@ -18,4 +18,5 @@ urlpatterns = [
     path('delete-venue/<str:pk>/', views.delete_venue, name='delete-venue'),
 
     path('delete-comment/<str:pk>/', views.delete_comment, name='delete-comment'),
+    
 ]

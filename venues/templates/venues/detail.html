@@ -6,7 +6,19 @@
     <div class="grid grid-rows-3 grid-flow-row gap-4 mt-4 mx-10">
     <div class="row-span-2 col-span-1">
         <div>
-            <h2 class="text-3xl">{{ venue }}</h2>
+            <h2 class="text-3xl">{{ venue }} ({{venue.average_rating}} / 6)</h2>
+            {% if request.user.is_authenticated %}
+            <div>
+                {% if request.user.is_authenticated %}
+                <form method="POST">
+                    {% csrf_token %}
+                    {{rating_form.as_p}}
+                    <button type="submit" name="rating_update" >Rate</button>
+                </form>
+
+                {% endif %}
+            </div>
+            {% endif %}
             <div class="mt-2">
                 <p>Categories:</p>
                 {% for category in venue.categories.all %}
@@ -39,10 +51,8 @@
             {% if request.user.is_authenticated %}
                 <form method="POST" action="">
                     {% csrf_token %}
-                    <label>
-                        <input class="mt-2" type="text" name="text" placeholder="Write comment">
-                    </label>
-                    <input type="submit" value="Submit">
+                    {{ comment_form.as_div }}
+                    <input type="submit" name="comment_add" value="Submit">
                 </form>
             {% endif %}
         </div>
