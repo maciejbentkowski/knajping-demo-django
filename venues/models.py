@@ -19,6 +19,9 @@ class Venue(models.Model):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
     categories = models.ManyToManyField(Category, related_name="venues")
+    owner = models.ForeignKey(User, 
+                              on_delete=models.SET_DEFAULT,
+                              default=User.objects.get(username="admin", is_superuser=True).pk)
     
     def average_rating(self) -> float:
         return Rating.objects.filter(venue=self).aggregate(Avg("rating"))['rating__avg']

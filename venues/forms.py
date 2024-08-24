@@ -5,7 +5,7 @@ from .models import Venue, Rating, Comment
 class VenueForm(ModelForm):
     class Meta:
         model = Venue
-        fields = '__all__'
+        exclude = ('owner',)
 
 class RatingForm(ModelForm):
     class Meta:

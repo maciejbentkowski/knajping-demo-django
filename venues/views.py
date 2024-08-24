@@ -119,7 +119,9 @@ def create_venue(request):
     if request.method == 'POST':
         form = VenueForm(request.POST)
         if form.is_valid():
-            form.save()
+            venue = form.save(commit=False)
+            venue.owner = request.user
+            venue.save()
             return redirect('venues:venues')
     context = {'form': form}
     return render(request, 'venues/venue_form.html', context)
