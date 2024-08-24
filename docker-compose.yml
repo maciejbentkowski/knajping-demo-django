@@ -21,6 +21,15 @@ services:
       - "8000:8000"
     depends_on:
       - db
+  tailwind:
+    build: .
+    command: "python manage.py tailwind start"
+    restart: "unless-stopped"
+    volumes:
+      - .:/app
+    tty: true
+    depends_on:
+      - web
 volumes:
   pgdata: 
 

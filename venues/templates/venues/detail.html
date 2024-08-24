@@ -3,8 +3,8 @@
 {% block content %}
 
 
-    <div class="grid grid-rows-3 grid-flow-row gap-4 mt-4 mx-10">
-    <div class="row-span-2 col-span-1">
+    <div class="grid grid-cols-12 gap-4 mt-4 mx-10">
+        <div class="col-span-6 row-span-3 border p-2">
         <div>
             <h2 class="text-3xl">{{ venue }} ({{venue.average_rating}} / 6)</h2>
             {% if request.user.is_authenticated %}
@@ -26,10 +26,21 @@
                 {% endfor %}
             </div>
         </div>
+        </div>
+        <div class="col-span-6">
+            {% for menu in menus %}
+                {{ menu.name }}
+                {% for item in menu.menu_items_all %}
+                <ul>
+                    <li>
+                        {{item.name}}:  {{item.price}}
+                    </li>
+                </ul>
 
-    </div>
-        <div class="row-span-6 col-span-3">VENUE MENU, IMAGES HERE in cards menu</div>
-        <div class="border-2 row-span-3 col-span-4 p-3">
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="border-2 col-span-12 p-3">
             <div>
                 <h3>
                     Comments:

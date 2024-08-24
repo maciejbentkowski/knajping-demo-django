@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Venue, Comment, Category, Rating
+from .models import Venue, Comment, Category, Rating, Menu
 from .forms import VenueForm, RatingForm, CommentForm
 
 
@@ -69,6 +69,7 @@ def detail(request, pk):
     comments = venue.comments.all()
     rating_form = RatingForm(initial={'rating':Rating.user_individual_rating(request.user, venue)})
     comment_form = CommentForm()
+    menus = Menu.objects.filter(venue=venue)
     try:
         rating = Rating.objects.get(user = request.user.id)
     except:
@@ -100,7 +101,8 @@ def detail(request, pk):
     context = {"venue": venue,
                "comments": comments,
                "rating_form": rating_form,
-               "comment_form": comment_form
+               "comment_form": comment_form,
+               "menus":menus,
                }
     return render(request, "venues/detail.html", context)
 
