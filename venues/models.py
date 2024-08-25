@@ -21,16 +21,17 @@ class Venue(models.Model):
     categories = models.ManyToManyField(Category, related_name="venues")
     owner = models.ForeignKey(User, 
                               on_delete=models.SET_DEFAULT,
-                              default=User.objects.get(username="admin", is_superuser=True).pk)
+                              default=None)
     
-    def average_rating(self) -> float:
-        return Rating.objects.filter(venue=self).aggregate(Avg("rating"))['rating__avg']
-
     def __str__(self):
         return self.name
     
+    def average_rating(self) -> float:
+        return Rating.objects.filter(venue=self).aggregate(Avg("rating"))['rating__avg']
+    
     def rating(self) -> int:
         return Rating.objects.filter(venue=self)
+    
 
     
 class Comment(models.Model):
@@ -86,3 +87,4 @@ class MenuItems(models.Model):
     
     class Meta:
         verbose_name_plural = "Menu Items"
+        
