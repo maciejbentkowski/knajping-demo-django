@@ -1,10 +1,11 @@
 import pytest
 from django.contrib.auth import get_user_model
-from venues.models import Venue, Category
+from venues.models import Venue, Category, Comment
 from venues.tests.factories import (UserFactory, 
                                     VenueFactory, 
                                     RatingFactory, 
-                                    CategoryFactory)
+                                    CategoryFactory,
+                                    CommentFactory)
 
 @pytest.mark.django_db()
 class TestVenueModel():
@@ -71,3 +72,25 @@ class TestCategoryModel():
    def test_str_method(self):
       category = CategoryFactory(name="Test Category")
       assert str(category) == "Test Category"
+      
+@pytest.mark.django_db()   
+class TestCommentModel():
+   
+   def test_comment_creation(self):
+      CommentFactory()
+      
+      assert Comment.objects.all().count() == 1
+      
+   def test_str_method(self):
+      comment = CommentFactory(text="Test Comment")
+      assert str(comment) == "Test Comment"
+      
+   def test_user_rating(self):
+      user = UserFactory()
+      venue = VenueFactory()
+      comment = CommentFactory(venue = venue, user=user)
+      RatingFactory(user = user, venue=venue, rating=3)
+      
+      assert comment.user_rating() == 3
+      
+      
