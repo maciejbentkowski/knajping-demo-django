@@ -1,42 +1,42 @@
 <header>
-  <nav class="relative flex w-full items-center justify-between bg-amber-800 py-2 shadow-dark-mild dark:bg-body-dark lg:flex-wrap lg:justify-start lg:py-4">
+  <nav class="relative flex bg-black/40 justify-start py-4">
     <div class="flex w-full flex-wrap items-center justify-between px-3">
-      <div class="flex items-center">
-        <button class="block border-0 bg-transparent px-2 text-black/50 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden" type="button" aria-controls="navbarSupportedContentY" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="[&>svg]:h-7 [&>svg]:w-7 [&>svg]:stroke-black/50 dark:[&>svg]:stroke-neutral-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-            </svg>
-          </span>
-        </button>
-      </div>
-      <div class="!visible hidden grow basis-[100%] items-center text-center lg:!flex lg:basis-auto lg:text-left" id="navbarSupportedContentY">
-        <ul class="me-auto flex flex-col lg:flex-row">
-          <li class="mb-4 lg:mb-0 lg:pe-2">
-            <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:index'%}">Home</a>
+        <ul class="flex flex-row mx-2 ">
+          <li class="">
+            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
+              href="{% url 'venues:index'%}">Home</a>
           </li>
-          <li class="mb-4 lg:mb-0 lg:pe-2">
-            <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:venues'%}">Venues</a>
+          <li class="">
+            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
+              href="{% url 'venues:venues'%}">Venues</a>
           </li>
+        </ul>
+        <ul class="flex justify-end flex-row mx-2">
           {% if request.user.is_authenticated %}
-              <li class="mb-4 lg:mb-0 lg:pe-2">
-                  <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:logout'%}">Logout</a>
-              </li>
-              <li>
-                <div class=" ml-1 ">
-                    Hello, {{ request.user.username }}
-                </div>
-              </li>
+          <li>
+            <div class="block pr-10 text-black/40">
+              Hello, {{ request.user.username }}
+            </div>
+          </li>
+          <li>
+            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
+              href="{% url 'venues:create-venue'  %}">Create Venue</a>
+          </li>
+          <li class="">
+            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
+              href="{% url 'venues:logout'%}">Logout</a>
+          </li>
           {% else %}
-            <li class="mb-4 lg:mb-0 lg:pe-2">
-                <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:login'%}">Sign In</a>
-            </li>
-            <li class="mb-4 lg:mb-0 lg:pe-2">
-                <a class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2" href="{% url 'venues:register'%}">Sign Up</a>
-            </li>
+          <li class="">
+            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
+              href="{% url 'venues:login'%}">Sign In</a>
+          </li>
+          <li class="">
+            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
+              href="{% url 'venues:register'%}">Sign Up</a>
+          </li>
           {% endif %}
         </ul>
-      </div>
     </div>
   </nav>
 </header>
