@@ -116,12 +116,16 @@ def venues(request):
 @login_required(login_url='venues:login')
 def create_venue(request):
     form = VenueForm()
+    is_active_field = form.fields['is_active']
+    is_active_field.disabled = True
+    is_active_field.widget = is_active_field.hidden_widget()
     if request.method == 'POST':
         form = VenueForm(request.POST)
         if form.is_valid():
             venue = form.save(commit=False)
             venue.owner = request.user
             venue.save()
+            venue.categories.add(*form.cleaned_data['categories'])
             return redirect('venues:venues')
     context = {'form': form}
     return render(request, 'venues/venue_form.html', context)

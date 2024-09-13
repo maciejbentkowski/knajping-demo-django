@@ -3,13 +3,29 @@
 
 {% block content %}
 
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
+<div class="w-full max-w-xs mx-auto text-center mt-5">
+    <div class="text-xl">
+        Dodaj swój lokal
+    </div>
 
-    </form>
+</div>
+<div class="grid grid-cols-7 mt-5 ">
+
+    <div class="col-start-3 col-span-3 pl-4 py-4 rounded shadow border px-5 ">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{form}}
+            <div class="text-xs">
+                    Po stworzeniu swojego lokalu, będzie on widoczny tylko dla Ciebie. Można go aktywować w opcji Edytuj
+            </div>
+            <button type="submit" value="Submit" class="bg-green-800 hover:bg-green-500 text-white my-4 py-2 px-4 rounded">
+                Dodaj
+            </button>
+    
+        </form>
+
+    </div>
+
 </div>
 
 {% endblock content %}
