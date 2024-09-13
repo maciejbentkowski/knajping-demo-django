@@ -119,6 +119,7 @@ def create_venue(request):
     is_active_field = form.fields['is_active']
     is_active_field.disabled = True
     is_active_field.widget = is_active_field.hidden_widget()
+    helper_text = "Po stworzeniu swojego lokalu, będzie on widoczny tylko dla Ciebie. Można go aktywować w opcji Edytuj"
     if request.method == 'POST':
         form = VenueForm(request.POST)
         if form.is_valid():
@@ -127,7 +128,7 @@ def create_venue(request):
             venue.save()
             venue.categories.add(*form.cleaned_data['categories'])
             return redirect('venues:venues')
-    context = {'form': form}
+    context = {'form': form, 'helper_text': helper_text}
     return render(request, 'venues/venue_form.html', context)
 
 
@@ -135,7 +136,6 @@ def create_venue(request):
 def update_venue(request, pk):
     venue = Venue.objects.get(id=pk)
     form = VenueForm(instance=venue)
-
     if request.method == 'POST':
         form = VenueForm(request.POST, instance=venue)
         if form.is_valid():
@@ -165,4 +165,4 @@ def delete_comment(request, pk):
         comment.delete()
         return redirect('venues:detail', pk=comment.venue.pk)
     else:
-        return render(request, 'venues/detail.html')
+        return render(request, 'venues/detail.html') 

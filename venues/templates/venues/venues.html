@@ -1,6 +1,5 @@
 {% extends 'main.html' %}
-This is all venues page
-ds
+
 {% block content %}
     <div class="mt-5 mx-10">
     <div class="grid grid-cols-3 gap-4">
@@ -23,12 +22,14 @@ ds
                     </div>
                     <div>
                     </div>
-                    <button type="button" class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-black shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
-                        <a href="{% url 'venues:update-venue' venue.id %}">Edit</a>
-                    </button>
-                    <button type="button" class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-red-700 shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
-                        <a href="{% url 'venues:delete-venue' venue.id %}">Delete</a>
-                    </button>
+                    <div>
+                        <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white my-4 py-2 px-4 rounded">
+                            <a href="{% url 'venues:update-venue' venue.id %}">Edytuj</a>
+                        </button>
+                        <button type="button" class="bg-red-600 hover:bg-red-400 text-white my-4 py-2 px-4 rounded">
+                            <a href="{% url 'venues:delete-venue' venue.id %}">Usuń</a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

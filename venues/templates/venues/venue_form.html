@@ -15,9 +15,11 @@
         <form method="POST" action="">
             {% csrf_token %}
             {{form}}
+            {% if helper_text %}
             <div class="text-xs">
-                    Po stworzeniu swojego lokalu, będzie on widoczny tylko dla Ciebie. Można go aktywować w opcji Edytuj
+                {{helper_text}}
             </div>
+            {% endif %}
             <button type="submit" value="Submit" class="bg-green-800 hover:bg-green-500 text-white my-4 py-2 px-4 rounded">
                 Dodaj
             </button>
