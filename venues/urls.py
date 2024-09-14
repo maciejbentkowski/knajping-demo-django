@@ -21,4 +21,6 @@ urlpatterns = [
     
     path('venues/<str:pk>/review', views.create_review, name='create-review'),
     
+    path('profile/<str:pk>/', views.profile, name="profile")
+    
 ]

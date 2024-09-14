@@ -1,0 +1,76 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+<div class="grid grid-cols-12">
+    <div class="col-span-4 py-5 border-r-2">
+        <div class = "size-60 mx-auto">
+            <img class="max-h-fit" src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1726272000&semt=ais_hybrid" alt="" />
+        </div>
+        <div class="text-center">
+            <ul>
+                <li>
+                    User: {{user.username}}
+                </li>
+                <li>
+                    Reviews: {{reviews.count}}
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="pl-3 pb-3 max-h-96 col-span-8  overflow-y-auto ">
+        <div class ="pt-3">
+            <h2 class="text-2xl">My venues</h2>
+        </div>
+        <div class="mt-2">
+            <ul class="">
+                {% for venue in venues %}
+                <li class="flex pt-2 place-items-center min-w-8  border pl-2">
+                    <div class="inline-block min-w-8 w-1/4">
+                        <a href="{% url 'venues:detail' venue.id %}">{{ venue.name }}</a>
+                        <div>
+                            {%if venue.is_active%}   
+                                <p>(Active)</p>
+                            {%else%}
+                                <p>(Unactive)</p>
+                            {%endif%}
+                        </div>
+                    </div>
+                    <div>
+                        Rating:
+                    </div>
+                    <div class="flex justify-end mx-2 ">
+                        <div class="">
+                            <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white my-4 rounded">
+                                <a class=" py-1 px-3 block" href="{% url 'venues:update-venue' venue.id %}">Edytuj</a>
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="bg-red-600 hover:bg-red-400 text-white my-4 ml-2 rounded">
+                                <a class=" py-1 px-3 block" href="{% url 'venues:delete-venue' venue.id %}">Usuń</a>
+                            </button>
+                        </div>
+                        
+
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+
+    </div>
+    <div class="col-span-12 border-t-2 pl-3">
+        <div class ="pt-3">
+            <h2 class="text-2xl">My Reviews</h2>
+        </div>
+        {% for review in reviews %}
+            {{ review.title}}
+        {% endfor %}    
+    </div>
+</div>
+
+{% endblock content %}

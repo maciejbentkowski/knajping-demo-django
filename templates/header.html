@@ -22,6 +22,10 @@
             <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
               href="{% url 'venues:create-venue'  %}">Create Venue</a>
           </li>
+          <li>
+            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
+              href="{% url 'venues:profile' request.user.id  %}">Profile</a>
+          </li>
           <li class="">
             <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
               href="{% url 'venues:logout'%}">Logout</a>

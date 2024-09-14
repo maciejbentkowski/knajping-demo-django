@@ -193,3 +193,10 @@ def create_review(request, pk):
             return redirect('venues:venues')
     context = {'review_form': review_form, 'rating_form': rating_form}
     return render(request, 'venues/review_form.html', context)
+
+def profile(request, pk):
+    user = User.objects.get(id = pk)
+    venues = Venue.objects.filter(owner = user.id).order_by('-is_active','name')
+    reviews = Review.objects.filter(user = user.id)
+    context = {'venues': venues, 'reviews': reviews}
+    return render(request, 'venues/profile.html', context)

@@ -4,6 +4,7 @@
     <div class="mt-5 mx-10">
     <div class="grid grid-cols-3 gap-4">
             {% for venue in venues %}
+            {% if venue.is_active %}
         <div>
             <div class="rounded-lg dark:bg-surface-dark border-2">
                 <div class="relative bg-cover bg-no-repeat">
@@ -33,6 +34,7 @@
                 </div>
             </div>
         </div>
+        {%endif%}
         {% endfor %}
         </div>
 </div>

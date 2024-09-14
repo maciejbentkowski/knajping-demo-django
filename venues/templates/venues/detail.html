@@ -61,7 +61,11 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     {{ comment_form.as_div }}
-                    <input type="submit" name="comment_add" value="Submit">
+                    <button type="submit" name="comment_add" class="border bg-green-800 hover:bg-green-500 text-white my-4 rounded">
+                        <div class=" py-1 px-3 block">
+                            Dodaj
+                        </div>                  
+                    </button>
                 </form>
             {% endif %}
         </div>
