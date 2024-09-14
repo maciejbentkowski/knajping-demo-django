@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Venue, Comment, Rating, Menu
+from .models import Venue, Comment, Rating, Menu, Review
 from .forms import VenueForm, CommentForm, ReviewForm, RatingForm
 
 
@@ -167,11 +167,17 @@ def delete_comment(request, pk):
     
 @login_required(login_url='venues:login')
 def create_review(request, pk):
-    review_form = ReviewForm()
-    rating_form = RatingForm()
+    try:
+        review = Review.objects.get(user=request.user.id, venue=pk)
+        rating = Rating.objects.get(id = review.rating.id)
+    except:
+        review = None
+        rating = None
+    review_form = ReviewForm(instance =review)
+    rating_form = RatingForm(instance = rating)
     if request.method == 'POST':
-        rating_form = RatingForm(request.POST)
-        review_form = ReviewForm(request.POST)
+        rating_form = RatingForm(request.POST, instance=rating)
+        review_form = ReviewForm(request.POST, instance =review)
         if rating_form.is_valid():
             rating = rating_form.save()
             rating.save()

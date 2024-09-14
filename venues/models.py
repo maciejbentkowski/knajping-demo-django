@@ -121,4 +121,3 @@ class Review(models.Model):
     rating = models.OneToOneField(Rating, on_delete=models.CASCADE, primary_key=True, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
-        
