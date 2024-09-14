@@ -1,4 +1,4 @@
-from .models import Venue, Rating, Comment, Category
+from .models import Venue, Review, Comment, Category, Rating
 from django.forms import ModelForm, TextInput, CharField, BooleanField, CheckboxInput, MultipleChoiceField,SelectMultiple, ModelChoiceField, ModelMultipleChoiceField, CheckboxSelectMultiple, RadioSelect
 
 
@@ -16,10 +16,15 @@ class VenueForm(ModelForm):
     field_order = ['name', 'categories']
     
     
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        exclude = {'user', 'venue', 'rating'}
+        
 class RatingForm(ModelForm):
     class Meta:
         model = Rating
-        fields = ['rating']
+        fields = "__all__"
         
 class CommentForm(ModelForm):
     class Meta:

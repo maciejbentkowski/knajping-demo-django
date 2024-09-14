@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Venue, Comment, Category, Rating, Menu
-from .forms import VenueForm, RatingForm, CommentForm
+from .models import Venue, Comment, Rating, Menu
+from .forms import VenueForm, CommentForm, ReviewForm, RatingForm
 
 
 def create_session(request):
@@ -67,7 +67,6 @@ def index(request):
 def detail(request, pk):
     venue = Venue.objects.get(pk=pk)
     comments = venue.comments.all()
-    rating_form = RatingForm(initial={'rating':Rating.user_individual_rating(request.user, venue)})
     comment_form = CommentForm()
     menus = Menu.objects.filter(venue=venue)
     try:
@@ -100,7 +99,6 @@ def detail(request, pk):
 
     context = {"venue": venue,
                "comments": comments,
-               "rating_form": rating_form,
                "comment_form": comment_form,
                "menus":menus,
                }
@@ -166,3 +164,23 @@ def delete_comment(request, pk):
         return redirect('venues:detail', pk=comment.venue.pk)
     else:
         return render(request, 'venues/detail.html') 
+    
+@login_required(login_url='venues:login')
+def create_review(request, pk):
+    review_form = ReviewForm()
+    rating_form = RatingForm()
+    if request.method == 'POST':
+        rating_form = RatingForm(request.POST)
+        review_form = ReviewForm(request.POST)
+        if rating_form.is_valid():
+            rating = rating_form.save()
+            rating.save()
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.user = request.user
+                review.rating = Rating.objects.get(id=rating.id)
+                review.venue = Venue.objects.get(id=pk)
+                review.save()
+            return redirect('venues:venues')
+    context = {'review_form': review_form, 'rating_form': rating_form}
+    return render(request, 'venues/review_form.html', context)

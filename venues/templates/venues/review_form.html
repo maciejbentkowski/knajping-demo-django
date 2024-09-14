@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        
+        {{review_form}}
+        {{rating_form}}
+        <button type="submit" value="Submit" name="review_create" class="bg-green-800 hover:bg-green-500 text-white my-4 py-2 px-4 rounded">
+            Dodaj
+        </button>
+    </form>
+</div>
+
+{% endblock content %}

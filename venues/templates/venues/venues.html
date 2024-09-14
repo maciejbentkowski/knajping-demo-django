@@ -23,11 +23,11 @@
                     <div>
                     </div>
                     <div>
-                        <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white my-4 py-2 px-4 rounded">
-                            <a href="{% url 'venues:update-venue' venue.id %}">Edytuj</a>
+                        <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white my-4 rounded">
+                            <a class=" py-1 px-3 block" href="{% url 'venues:update-venue' venue.id %}">Edytuj</a>
                         </button>
-                        <button type="button" class="bg-red-600 hover:bg-red-400 text-white my-4 py-2 px-4 rounded">
-                            <a href="{% url 'venues:delete-venue' venue.id %}">Usuń</a>
+                        <button type="button" class="bg-red-600 hover:bg-red-400 text-white my-4 ml-2 rounded">
+                            <a class=" py-1 px-3 block" href="{% url 'venues:delete-venue' venue.id %}">Usuń</a>
                         </button>
                     </div>
                 </div>

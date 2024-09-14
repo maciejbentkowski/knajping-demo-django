@@ -10,12 +10,9 @@
             {% if request.user.is_authenticated %}
             <div>
                 {% if request.user.is_authenticated %}
-                <form method="POST">
-                    {% csrf_token %}
-                    {{rating_form.as_p}}
-                    <button type="submit" name="rating_update" >Rate</button>
-                </form>
-
+                    <button type="button" class="border bg-slate-500 hover:bg-slate-400 text-black my-4 rounded">
+                        <a class=" py-1 px-3 block" href="{% url 'venues:create-review' venue.id %}" >Oceń</a>
+                    </button>
                 {% endif %}
             </div>
             {% endif %}

@@ -5,7 +5,6 @@ from django.db.models import Avg
 
 
 class Category(models.Model):
-
     name = models.CharField(max_length=20)
 
     def __str__(self):
@@ -25,13 +24,15 @@ class Venue(models.Model):
     
     def __str__(self):
         return self.name
-    
-    def average_rating(self) -> float:
+    '''
+        def average_rating(self) -> float:
         return Rating.objects.filter(venue=self).aggregate(Avg("rating"))['rating__avg']
     
-    def rating(self) -> int:
+        def rating(self) -> int:
         return Rating.objects.filter(venue=self)
     
+    '''
+
 
     
 class Comment(models.Model):
@@ -42,28 +43,54 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
-    
+    '''
     def user_rating(self) -> int:
         return Rating.objects.get(user=self.user, venue=self.venue).rating
-    
+
+    '''
+
+
 
 class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
-    rating = models.IntegerField(
+    quality_rating = models.IntegerField(
         validators=[MaxValueValidator(6), MinValueValidator(1)],
-        choices= {"None":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6},
         default=0)
-        
-    def __str__(self):
-        return f"{self.venue.name}: {self.rating}"
     
+    service_rating = models.IntegerField(
+        validators=[MaxValueValidator(6), MinValueValidator(1)],
+        default=0)
+    
+    atmosphere_rating = models.IntegerField(
+        validators=[MaxValueValidator(6), MinValueValidator(1)],
+        default=0)
+    
+    value_rating = models.IntegerField(
+        validators=[MaxValueValidator(6), MinValueValidator(1)],
+        default=0)
+    
+    availability_rating = models.IntegerField(
+        validators=[MaxValueValidator(6), MinValueValidator(1)],
+        default=0)
+    
+    uniqueness_rating = models.IntegerField(
+        validators=[MaxValueValidator(6), MinValueValidator(1)],
+        default=0)
+    '''
+        def __str__(self):
+        return Rating.objects.filter(id=self).aggregate(Avg("rating"))['rating__avg']
+
         
-    def user_individual_rating(user, venue) -> int:
+    def user_individual_rating(self) -> int:
         try:
-            return Rating.objects.get(user=user, venue=venue).rating
+            return Rating.objects.filter(id=self).aggregate(Avg("rating"))['rating__avg']
         except Rating.DoesNotExist:
             return None
+    
+    '''
+
+ 
+
+    
         
 class Menu(models.Model):
     name = models.CharField()
@@ -87,4 +114,11 @@ class MenuItems(models.Model):
     
     class Meta:
         verbose_name_plural = "Menu Items"
+        
+class Review(models.Model):
+    title = models.CharField()
+    description = models.TextField()
+    rating = models.OneToOneField(Rating, on_delete=models.CASCADE, primary_key=True, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
         
