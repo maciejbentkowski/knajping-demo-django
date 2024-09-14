@@ -25,7 +25,7 @@ class ReviewForm(ModelForm):
         
 class RatingForm(ModelForm):
     CHOICES = [
-        ('nisko', '1'),
+        ('1', '1'),
         ('2', '2'),
         ('3', '3'),
         ('4', '4'),
