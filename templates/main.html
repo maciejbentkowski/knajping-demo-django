@@ -11,21 +11,30 @@
     <title>Knajping</title>
     {% tailwind_css %}
 </head>
-<body class = 'w-full'>
-    {% include 'header.html' %}
+<body class = 'w-full min-h-screen '>
+    <header class="border-b-2">
+        {% include 'header.html' %}
+    </header>
+        <div>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <main class="flex flex-col min-h-screen">
+        {% block content %}
+    
+    
+        {% endblock %}
+        </main>
+        <footer class= "border-t-2 py-2 mt-2">
+            {% include 'footer.html' %}
+        </footer>
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
 
-    {% block content %}
-
-
-    {% endblock %}
 </body>
 
 </html>

@@ -1,46 +1,44 @@
-<header>
-  <nav class="relative flex bg-black/40 justify-start py-4">
-    <div class="flex w-full flex-wrap items-center justify-between px-3">
-        <ul class="flex flex-row mx-2 ">
-          <li class="">
-            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
-              href="{% url 'venues:index'%}">Home</a>
-          </li>
-          <li class="">
-            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
-              href="{% url 'venues:venues'%}">Venues</a>
-          </li>
-        </ul>
-        <ul class="flex justify-end flex-row mx-2">
-          {% if request.user.is_authenticated %}
-          <li>
-            <div class="block pr-10 text-black/40">
-              Hello, {{ request.user.username }}
-            </div>
-          </li>
-          <li>
-            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
-              href="{% url 'venues:create-venue'  %}">Create Venue</a>
-          </li>
-          <li>
-            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
-              href="{% url 'venues:profile' request.user.id  %}">Profile</a>
-          </li>
-          <li class="">
-            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
-              href="{% url 'venues:logout'%}">Logout</a>
-          </li>
-          {% else %}
-          <li class="">
-            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
-              href="{% url 'venues:login'%}">Sign In</a>
-          </li>
-          <li class="">
-            <a class="block px-4 text-white/60 transition duration-200 hover:text-black/80"
-              href="{% url 'venues:register'%}">Sign Up</a>
-          </li>
-          {% endif %}
-        </ul>
-    </div>
-  </nav>
-</header>
+<nav class="relative flex bg-white justify-start py-4">
+  <div class="flex w-full flex-wrap items-center justify-between px-3">
+      <ul class="flex flex-row mx-2 ">
+        <li class="">
+          <a class="block px-4 text-black/40 transition duration-200 hover:text-black/80"
+            href="{% url 'venues:index'%}">Home</a>
+        </li>
+        <li class="">
+          <a class="block px-4 text-black/40 transition duration-200 hover:text-black/80"
+            href="{% url 'venues:venues'%}">Venues</a>
+        </li>
+      </ul>
+      <ul class="flex justify-end flex-row mx-2">
+        {% if request.user.is_authenticated %}
+        <li>
+          <div class="block pr-10 text-black/80">
+            Hello, {{ request.user.username }}
+          </div>
+        </li>
+        <li>
+          <a class="block px-4 text-black/40 transition duration-200 hover:text-black/80"
+            href="{% url 'venues:create-venue'  %}">Create Venue</a>
+        </li>
+        <li>
+          <a class="block px-4 text-black/40 transition duration-200 hover:text-black/80"
+            href="{% url 'venues:profile' request.user.id  %}">Profile</a>
+        </li>
+        <li class="">
+          <a class="block px-4 text-black/40 transition duration-200 hover:text-black/80"
+            href="{% url 'venues:logout'%}">Logout</a>
+        </li>
+        {% else %}
+        <li class="">
+          <a class="block px-4 text-black/40 transition duration-200 hover:text-black/80"
+            href="{% url 'venues:login'%}">Sign In</a>
+        </li>
+        <li class="">
+          <a class="block px-4 text-black/40 transition duration-200 hover:text-black/80"
+            href="{% url 'venues:register'%}">Sign Up</a>
+        </li>
+        {% endif %}
+      </ul>
+  </div>
+</nav>
