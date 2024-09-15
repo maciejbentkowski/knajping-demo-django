@@ -22,8 +22,13 @@
                                         </h3>
                                         <div class="dark:text-blue-700">
                                             {% for category in venue.categories.all %}
-                                                {{ category.name }}
+                                                <div class="text-xs">
+                                                    {{ category.name }}
+                                                </div>
                                             {% endfor %}
+                                        </div>
+                                        <div>
+                                            {{venue.reviews}}
                                         </div>
                                     </div>
                                 </div>

@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="grid grid-cols-12">
-    <div class="col-span-4 py-5 border-r-2">
+    <div class="col-span-4 py-5 ">
         <div class = "size-60 mx-auto">
             <img class="max-h-fit" src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1726272000&semt=ais_hybrid" alt="" />
         </div>
@@ -21,8 +21,8 @@
         </div>
     </div>
     <div class=" pl-3 pb-3 max-h-96 col-span-8  overflow-y-auto ">
-        <div class ="block w-80 pt-3 relative mb-4">
-            <h2 class=" text-2xl">My venues</h2>
+        <div class ="pt-3 mb-4">
+            <h2 class=" text-2xl border-b">My Venues</h2>
         </div>
         <div class="">
             <ul class="">
@@ -32,9 +32,9 @@
                         <a href="{% url 'venues:detail' venue.id %}">{{ venue.name }}</a>
                         <div>
                             {%if venue.is_active%}   
-                                <p>(Active)</p>
+                                <p class="text-xs text-green-300">(Active)</p>
                             {%else%}
-                                <p>(Unactive)</p>
+                                <p class="text-xs text-red-300">(Unactive)</p>
                             {%endif%}
                         </div>
                     </div>
@@ -59,17 +59,30 @@
                 {% endfor %}
             </ul>
         </div>
-
-
-
     </div>
-    <div class="col-span-12 border-t-2 pl-3 ">
-        <div class ="pt-3">
+    <div class="col-span-12 pl-4 ">
+        <div class ="pt-2 border-b">
             <h2 class="text-2xl">My Reviews</h2>
         </div>
-        {% for review in reviews %}
-            {{ review.title}}
-        {% endfor %}    
+        <div class="grid grid-cols-8">
+            {% for review in reviews %}
+            <div class="col-span-8 border-b py-2 px-7" >
+                <div class="col-span-8">
+                    <a class="italic text-lg" href="{% url 'venues:detail' review.venue.id %}">{{ review.venue }}</a>
+                </div>
+                <div class="col-start-2 text-center col-span-6 flex-col px-3 pb-3 mt-5">
+                    <div class="text-xl py-2">
+                        {{ review.title}}
+                    </div>
+                    <div class="text-xs leading-4 text-pretty line-clamp-3">
+                        {{ review.description}}
+                    </div>
+                </div>
+            </div>
+                
+            {% endfor %}    
+        </div>
+
     </div>
 </div>
 
