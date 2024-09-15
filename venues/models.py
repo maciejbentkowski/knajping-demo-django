@@ -121,3 +121,10 @@ class Review(models.Model):
     rating = models.OneToOneField(Rating, on_delete=models.CASCADE, primary_key=True, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
+
+    def avg_rating(self) -> float:
+        ratings = Rating.objects.filter(pk = self.rating.id).values()
+        for x in ratings:
+            ratings = sum((x['quality_rating'], x['service_rating'], x['atmosphere_rating'], x['value_rating'], x['availability_rating'], x['uniqueness_rating']))/6
+
+        return "{:.2f}".format(ratings)

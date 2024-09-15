@@ -198,5 +198,6 @@ def profile(request, pk):
     user = User.objects.get(id = pk)
     venues = Venue.objects.filter(owner = user.id).order_by('-is_active','name')
     reviews = Review.objects.filter(user = user.id)
-    context = {'venues': venues, 'reviews': reviews}
+    avg_rating = Review.avg_rating
+    context = {'venues': venues, 'reviews': reviews, 'avg_rating':avg_rating}
     return render(request, 'venues/profile.html', context)

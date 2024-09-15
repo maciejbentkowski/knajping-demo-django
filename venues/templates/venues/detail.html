@@ -4,7 +4,7 @@
 
 
     <div class="grid grid-cols-12 gap-4 mt-4 mx-10">
-        <div class="col-span-6 row-span-3 border p-2">
+        <div class="col-span-4 row-span-3 border p-2">
         <div>
             <h2 class="text-3xl">{{ venue }} ({{venue.average_rating}} / 6)</h2>
             {% if request.user.is_authenticated %}
@@ -24,7 +24,7 @@
             </div>
         </div>
         </div>
-        <div class="col-span-6">
+        <div class="col-span-8">
             {% for menu in menus %}
                 {{ menu.name }}
                 {% for item in menu.menu_items_all %}
@@ -37,7 +37,12 @@
                 {% endfor %}
             {% endfor %}
         </div>
-        <div class="border-2 col-span-12 p-3">
+        <div class="border col-span-12 p-3">
+
+            
+
+        </div>
+        <div class="border col-span-12 p-3">
             <div>
                 <h3>
                     Comments:

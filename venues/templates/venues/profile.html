@@ -28,7 +28,7 @@
             <ul class="">
                 {% for venue in venues %}
                 <li class="flex pt-2 place-items-center min-w-8  border pl-2">
-                    <div class="inline-block min-w-8 w-1/4">
+                    <div class="min-w-8 w-1/4">
                         <a href="{% url 'venues:detail' venue.id %}">{{ venue.name }}</a>
                         <div>
                             {%if venue.is_active%}   
@@ -39,9 +39,9 @@
                         </div>
                     </div>
                     <div>
-                        Rating:
+                        Rating: {{venue.avg_rating}}
                     </div>
-                    <div class="flex justify-end mx-2 ">
+                    <div class="flex ml-auto mx-2 ">
                         <div class="">
                             <button type="button" class="bg-blue-600 hover:bg-blue-500 text-white my-4 rounded">
                                 <a class=" py-1 px-3 block" href="{% url 'venues:update-venue' venue.id %}">Edytuj</a>
@@ -66,10 +66,13 @@
         </div>
         <div class="grid grid-cols-8">
             {% for review in reviews %}
+
             <div class="col-span-8 border-b py-2 px-7" >
-                <div class="col-span-8">
+                <div class="col-span-6">
                     <a class="italic text-lg" href="{% url 'venues:detail' review.venue.id %}">{{ review.venue }}</a>
+
                 </div>
+                <div class="col-span-2">Rating: {{review.avg_rating}}</div>
                 <div class="col-start-2 text-center col-span-6 flex-col px-3 pb-3 mt-5">
                     <div class="text-xl py-2">
                         {{ review.title}}
