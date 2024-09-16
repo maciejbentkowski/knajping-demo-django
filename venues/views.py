@@ -76,6 +76,10 @@ def detail(request, pk):
     except Venue.DoesNotExist:
         raise Http404("Venue does not exist")
 
+    if (venue.owner != request.user) and venue.is_active == False:
+        messages.error(request, "Ta restauracja nie jest aktywna")
+        return redirect('venues:index')
+    
     if request.method == 'POST' and 'comment_add' in request.POST:
         Comment.objects.create(
             user=request.user,
@@ -136,7 +140,7 @@ def update_venue(request, pk):
     venue = Venue.objects.get(id=pk)
     form = VenueForm(instance=venue)
     if venue.owner != request.user:
-        messages.error(request, "You are only allowed to edit Your Venues")
+        messages.error(request, "You can only edit your venues")
         return redirect('venues:index')
         
     if request.method == 'POST':
@@ -172,6 +176,10 @@ def delete_comment(request, pk):
     
 @login_required(login_url='venues:login')
 def create_review(request, pk):
+    venue = Venue.objects.get(id=pk)
+    if (venue.owner != request.user) and venue.is_active == False:
+        messages.error(request, "Nie mozesz ocenić nieaktywnej restauracji")
+        return redirect('venues:index')
     try:
         review = Review.objects.get(user=request.user.id, venue=pk)
         rating = Rating.objects.get(id = review.rating.id)

@@ -31,11 +31,11 @@
                     <div class="min-w-8 w-1/4">
                         <a href="{% url 'venues:detail' venue.id %}">{{ venue.name }}</a>
                         <div>
-                            {%if venue.is_active%}   
+                            {% if venue.is_active %}   
                                 <p class="text-xs text-green-300">(Active)</p>
-                            {%else%}
+                            {% else %}
                                 <p class="text-xs text-red-300">(Unactive)</p>
-                            {%endif%}
+                            {% endif %}
                         </div>
                     </div>
                     <div>
