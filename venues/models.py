@@ -49,7 +49,7 @@ class Venue(models.Model):
             rating_data['avg_uniqueness']
         ) / 6
         
-        return f"{avg_venue_rating:.2f}"
+        return f"{avg_venue_rating:.2f} / 6"
 
     
 class Comment(models.Model):

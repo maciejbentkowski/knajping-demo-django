@@ -5,7 +5,11 @@
     <div class="col-span-4 row-span-3 border p-2">
         <div>
             <h2 class="text-3xl">
-                {{ venue }} ({{venue.avg_rating}} / 6)
+                {% if venue.avg_rating != None %}
+                {{ venue }} ({{venue.avg_rating}})
+                {% else %}
+                {{ venue }}
+                {% endif %}
             </h2>
             {% if request.user.is_authenticated %}
                 <div>
@@ -46,8 +50,8 @@
         </div>
         {% for review in reviews %}
             {% if reviews != None %}
-            <div class="mx-7">
-                <div class="mb-2">
+            <div class="mx-7 mb-10 border p-4">
+                <div class="mb-2 text-xl">
                     {{review.title}}  ({{review.avg_rating}} / 6)
                 </div>
                 <div class="my-4">

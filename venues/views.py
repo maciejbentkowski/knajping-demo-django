@@ -70,11 +70,7 @@ def detail(request, pk):
     comment_form = CommentForm()
     menus = Menu.objects.filter(venue=venue)
     reviews = Review.objects.filter(venue=venue)
-    try:
-        rating = Rating.objects.get(user = request.user.id)
-    except:
-        rating = None
-        
+    
     try:
         venue = Venue.objects.get(id=pk)
     except Venue.DoesNotExist:
@@ -139,11 +135,15 @@ def update_venue(request, pk):
     purpose = "Edytuj"
     venue = Venue.objects.get(id=pk)
     form = VenueForm(instance=venue)
+    if venue.owner != request.user:
+        messages.error(request, "You are only allowed to edit Your Venues")
+        return redirect('venues:index')
+        
     if request.method == 'POST':
         form = VenueForm(request.POST, instance=venue)
         if form.is_valid():
             form.save()
-            return redirect('venues:venues')
+            return redirect('venues:profile', pk=request.user.id)
 
     context = {'form': form, 'purpose': purpose}
     return render(request, 'venues/venue_form.html', context)
