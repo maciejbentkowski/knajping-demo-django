@@ -69,6 +69,7 @@ def detail(request, pk):
     comments = venue.comments.all()
     comment_form = CommentForm()
     menus = Menu.objects.filter(venue=venue)
+    reviews = Review.objects.filter(venue=venue)
     try:
         rating = Rating.objects.get(user = request.user.id)
     except:
@@ -101,6 +102,7 @@ def detail(request, pk):
                "comments": comments,
                "comment_form": comment_form,
                "menus":menus,
+               "reviews":reviews
                }
     return render(request, "venues/detail.html", context)
 

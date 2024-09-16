@@ -38,8 +38,36 @@
             {% endfor %}
         </div>
         <div class="border col-span-12 p-3">
+            <div>
+                <h3>
+                    Reveiews:
+                </h3>
+            </div>
+            {% for review in reviews %}
+                {% if reviews == None %}
+                <div class="mx-7">
+                    <div>
+                        {{review.title}}  ({{review.avg_rating}} / 6)
+                    </div>
+                    <div>
+                        Ratings:
 
-            
+
+                    </div>
+                    <div>
+                        <p class="text-xs leading-4 text-pretty line-clamp-4">
+                            {{review.description}}
+                        </p>
+                    </div>  
+
+                </div>
+                {% else %}
+                    Nie ma zadnych reviews
+                {% endif %}
+
+
+            {% endfor%}
+
 
         </div>
         <div class="border col-span-12 p-3">
