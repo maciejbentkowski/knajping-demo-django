@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Avg
+from django.db.models import Avg, Count
 
 
 class Category(models.Model):
@@ -24,15 +24,32 @@ class Venue(models.Model):
     
     def __str__(self):
         return self.name
-    '''
-        def average_rating(self) -> float:
-        return Rating.objects.filter(venue=self).aggregate(Avg("rating"))['rating__avg']
-    
-        def rating(self) -> int:
-        return Rating.objects.filter(venue=self)
-    
-    '''
 
+    def avg_rating(self) -> str:
+        rating_data = Review.objects.filter(venue=self).aggregate(
+            avg_quality=Avg('rating__quality_rating'),
+            avg_service=Avg('rating__service_rating'),
+            avg_atmosphere=Avg('rating__atmosphere_rating'),
+            avg_value=Avg('rating__value_rating'),
+            avg_availability=Avg('rating__availability_rating'),
+            avg_uniqueness=Avg('rating__uniqueness_rating'),
+            total_ratings=Count('rating_id')
+        )
+        total_ratings = rating_data['total_ratings']
+    
+        if total_ratings == 0:
+            return None
+        
+        avg_venue_rating = (
+            rating_data['avg_quality'] +
+            rating_data['avg_service'] +
+            rating_data['avg_atmosphere'] +
+            rating_data['avg_value'] +
+            rating_data['avg_availability'] +
+            rating_data['avg_uniqueness']
+        ) / 6
+        
+        return f"{avg_venue_rating:.2f}"
 
     
 class Comment(models.Model):
@@ -43,12 +60,32 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
-    '''
-    def user_rating(self) -> int:
-        return Rating.objects.get(user=self.user, venue=self.venue).rating
 
-    '''
-
+    def user_avg_rating(self) -> str:
+        rating_data = Review.objects.filter(venue=self.venue, user=self.user).aggregate(
+            avg_quality=Avg('rating__quality_rating'),
+            avg_service=Avg('rating__service_rating'),
+            avg_atmosphere=Avg('rating__atmosphere_rating'),
+            avg_value=Avg('rating__value_rating'),
+            avg_availability=Avg('rating__availability_rating'),
+            avg_uniqueness=Avg('rating__uniqueness_rating'),
+            total_ratings=Count('rating_id')
+        )
+        total_ratings = rating_data['total_ratings']
+    
+        if total_ratings == 0:
+            return None
+        
+        avg_venue_rating = (
+            rating_data['avg_quality'] +
+            rating_data['avg_service'] +
+            rating_data['avg_atmosphere'] +
+            rating_data['avg_value'] +
+            rating_data['avg_availability'] +
+            rating_data['avg_uniqueness']
+        ) / 6
+        
+        return f"{avg_venue_rating:.2f}"
 
 
 class Rating(models.Model):
@@ -75,23 +112,12 @@ class Rating(models.Model):
     uniqueness_rating = models.IntegerField(
         validators=[MaxValueValidator(6), MinValueValidator(1)],
         default=0)
-    '''
-        def __str__(self):
-        return Rating.objects.filter(id=self).aggregate(Avg("rating"))['rating__avg']
-
-        
-    def user_individual_rating(self) -> int:
-        try:
-            return Rating.objects.filter(id=self).aggregate(Avg("rating"))['rating__avg']
-        except Rating.DoesNotExist:
-            return None
     
-    '''
-
- 
-
+    def avg(self) -> str:
+        avg_value = str((self.quality_rating + self.service_rating + self.atmosphere_rating + self.value_rating + self.availability_rating + self.uniqueness_rating)/6)
+        return avg_value
     
-        
+      
 class Menu(models.Model):
     name = models.CharField()
     description = models.TextField()
@@ -103,6 +129,7 @@ class Menu(models.Model):
     def menu_items_all(self):
         return MenuItems.objects.filter(menu = self)
     
+
 class MenuItems(models.Model):
     name = models.CharField()
     description = models.TextField()
@@ -114,6 +141,7 @@ class MenuItems(models.Model):
     
     class Meta:
         verbose_name_plural = "Menu Items"
+  
         
 class Review(models.Model):
     title = models.CharField()
@@ -123,8 +151,26 @@ class Review(models.Model):
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
 
     def avg_rating(self) -> float:
-        ratings = Rating.objects.filter(pk = self.rating.id).values()
-        for x in ratings:
-            ratings = sum((x['quality_rating'], x['service_rating'], x['atmosphere_rating'], x['value_rating'], x['availability_rating'], x['uniqueness_rating']))/6
+        rating = self.rating
+        total = sum([
+                rating.quality_rating, 
+                rating.service_rating, 
+                rating.atmosphere_rating, 
+                rating.value_rating, 
+                rating.availability_rating, 
+                rating.uniqueness_rating
+                ])
+        avg = total / 6
+        return round(avg, 2)   
 
-        return "{:.2f}".format(ratings)
+    
+    def rating_list(self) -> dict:
+        rating = self.rating
+        return {
+            'Quality Rating': rating.quality_rating,
+            'Service Rating': rating.service_rating,
+            'Atmosphere Rating': rating.atmosphere_rating,
+            'Value Rating': rating.value_rating,
+            'Availability Rating': rating.availability_rating,
+            'Uniqueness Rating': rating.uniqueness_rating
+        }

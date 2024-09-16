@@ -1,20 +1,22 @@
 {% extends 'main.html' %}
 
 {% block content %}
-
-
-    <div class="grid grid-cols-12 gap-4 mt-4 mx-10">
-        <div class="col-span-4 row-span-3 border p-2">
+<div class="grid grid-cols-12 gap-4 mt-4 mx-10">
+    <div class="col-span-4 row-span-3 border p-2">
         <div>
-            <h2 class="text-3xl">{{ venue }} ({{venue.average_rating}} / 6)</h2>
+            <h2 class="text-3xl">
+                {{ venue }} ({{venue.avg_rating}} / 6)
+            </h2>
             {% if request.user.is_authenticated %}
-            <div>
-                {% if request.user.is_authenticated %}
-                    <button type="button" class="border bg-slate-500 hover:bg-slate-400 text-black my-4 rounded">
-                        <a class=" py-1 px-3 block" href="{% url 'venues:create-review' venue.id %}" >Oceń</a>
-                    </button>
-                {% endif %}
-            </div>
+                <div>
+                    {% if request.user.is_authenticated %}
+                        <button type="button" class="border bg-slate-500 hover:bg-slate-400 text-black my-4 rounded">
+                            <a class=" py-1 px-3 block" href="{% url 'venues:create-review' venue.id %}" >
+                                Oceń
+                            </a>
+                        </button>
+                    {% endif %}
+                </div>
             {% endif %}
             <div class="mt-2">
                 <p>Categories:</p>
@@ -23,72 +25,82 @@
                 {% endfor %}
             </div>
         </div>
-        </div>
-        <div class="col-span-8">
-            {% for menu in menus %}
-                {{ menu.name }}
-                {% for item in menu.menu_items_all %}
-                <ul>
-                    <li>
-                        {{item.name}}:  {{item.price}}
-                    </li>
-                </ul>
-
-                {% endfor %}
+    </div>
+    <div class="col-span-8">
+        {% for menu in menus %}
+            {{ menu.name }}
+            {% for item in menu.menu_items_all %}
+            <ul>
+                <li>
+                    {{item.name}}:  {{item.price}}
+                </li>
+            </ul>
             {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="border col-span-12 p-3">
+        <div class="text-lg mb-5">
+            <h3>
+                Reveiews:
+            </h3>
         </div>
-        <div class="border col-span-12 p-3">
-            <div>
-                <h3>
-                    Reveiews:
-                </h3>
-            </div>
-            {% for review in reviews %}
-                {% if reviews == None %}
-                <div class="mx-7">
-                    <div>
-                        {{review.title}}  ({{review.avg_rating}} / 6)
-                    </div>
-                    <div>
-                        Ratings:
-
-
-                    </div>
-                    <div>
-                        <p class="text-xs leading-4 text-pretty line-clamp-4">
-                            {{review.description}}
-                        </p>
-                    </div>  
-
+        {% for review in reviews %}
+            {% if reviews != None %}
+            <div class="mx-7">
+                <div class="mb-2">
+                    {{review.title}}  ({{review.avg_rating}} / 6)
                 </div>
-                {% else %}
-                    Nie ma zadnych reviews
-                {% endif %}
-
-
-            {% endfor%}
-
-
-        </div>
-        <div class="border col-span-12 p-3">
-            <div>
-                <h3>
-                    Comments:
-                </h3>
-                {% for comment in comments %}
-                    <div class="border-2 mt-3 px-3 py-2">
-                        <div class="float">Rate: {{comment.user_rating}} </div>
-                        <div>{{ comment.user }}: </div>
-                        <div class=" mt-2 italic">{{ comment.text }} </div>
-                        {% if request.user.is_authenticated and request.user == comment.user %}
+                <div class="my-4">
+                    <p class="text-sm leading-4 text-pretty line-clamp-4">
+                        {{review.description}}
+                    </p>
+                </div>
+                <div class="border-t">
+                    Ratings:
+                    <div class="flex text-center justify-evenly mt-2">
+                        {% for category, rating in review.rating_list.items %}
+                            <div class="">
+                                <div class="">
+                                    {{category}}
+                                </div>
+                                <div class="">
+                                    {{rating}}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>  
+            </div>
+            {% else %}
+                Nie ma zadnych reviews
+            {% endif %}
+        {% endfor%}
+    </div>
+    <div class="border col-span-12 p-3">
+        <div>
+            <h3>
+                Comments:
+            </h3>
+            {% for comment in comments %}
+                <div class="border-2 mt-3 px-3 py-2">
+                    <div class="float">
+                        Rate: {{comment.user_avg_rating}}
+                    </div>
+                    <div>
+                        {{ comment.user }}:
+                    </div>
+                    <div class=" mt-2 italic">
+                        {{ comment.text }}
+                    </div>
+                    {% if request.user.is_authenticated and request.user == comment.user %}
                     <form method="POST" action="{% url 'venues:delete-comment' comment.id %}">
-                    {% csrf_token %}
-                    <input class="mt-2 text-red-700" type="submit" value="Delete">
+                        {% csrf_token %}
+                        <input class="mt-2 text-red-700" type="submit" value="Delete"></input>
                     </form>
                     {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
+        </div>
         <div>
             {% if request.user.is_authenticated %}
                 <form method="POST" action="">
@@ -102,7 +114,6 @@
                 </form>
             {% endif %}
         </div>
-        </div>
     </div>
-
+</div>
 {% endblock content %}
