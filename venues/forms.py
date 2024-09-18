@@ -9,6 +9,7 @@ from django.forms import (ModelForm,
                           Textarea,
                           ChoiceField,
                           RadioSelect,
+                          inlineformset_factory
 ) 
 
 
@@ -121,4 +122,6 @@ class MenuItemsForm(ModelForm):
 
     class Meta:
         model = MenuItems
-        exclude = ['menu, price']
+        exclude = ['menu']
+
+MenuItemsFormSet = inlineformset_factory(Menu, MenuItems, MenuItemsForm, fields=("name", "description","price"), extra=3)

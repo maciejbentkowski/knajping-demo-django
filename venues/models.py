@@ -134,7 +134,7 @@ class MenuItems(models.Model):
     name = models.CharField()
     description = models.TextField()
     price = models.FloatField()
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='menu_items')
     
     def __str__(self):
         return f"{self.name}"

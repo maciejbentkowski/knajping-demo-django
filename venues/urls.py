@@ -24,6 +24,7 @@ urlpatterns = [
     path('profile/<str:pk>/', views.profile, name='profile'),
     
     path('venues/<int:pk>/menu', views.menu_list, name='menu'),
-    path('delete-menu/<str:pk>/', views.delete_menu, name='delete-menu')
+    path('delete-menu/<str:pk>/', views.delete_menu, name='delete-menu'),
+    path('venues/<int:pk>/menu/<int:menu>', views.menu_items, name="menu-add-items")
     
 ]

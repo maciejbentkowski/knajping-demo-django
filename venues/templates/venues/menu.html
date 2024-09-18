@@ -7,6 +7,15 @@
     {%for menu in menus%}
     <div>
         {{menu.name}}
+        {% for item in menu.menu_items.values%}
+        <ul>
+            <li>
+                {{item.name}}{{item.price}}
+            </li>
+        </ul>
+        {% endfor %}
+
+        <a href="{% url 'venues:menu-add-items' venue.id menu.id %}">Add Items</a>
         <form method="POST" action="{% url 'venues:delete-menu' menu.id %}">
             {% csrf_token %}
             <input class="mt-2 text-red-700" type="submit" value="Delete"></input>

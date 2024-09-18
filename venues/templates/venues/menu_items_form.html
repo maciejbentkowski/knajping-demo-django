@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+
+
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    {% for form in formset %}
+        {{form}}
+    {% endfor %}
+    <button type="submit" name="menu_add_items" class="border bg-green-800 hover:bg-green-500 text-white my-4 rounded">
+        <div class=" py-1 px-3 block">
+            Dodaj
+        </div>                  
+    </button>
+</form>
+
+
+
+{% endblock content %}
