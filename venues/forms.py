@@ -1,6 +1,15 @@
-from .models import Venue, Review, Comment, Category, Rating
-from django.forms import ModelForm, TextInput, CharField, BooleanField, CheckboxInput, ModelMultipleChoiceField, CheckboxSelectMultiple, Textarea, ChoiceField, RadioSelect
-
+from .models import Venue, Review, Comment, Category, Rating, Menu, MenuItems
+from django.forms import (ModelForm,
+                          TextInput,
+                          CharField,
+                          BooleanField,
+                          CheckboxInput,
+                          ModelMultipleChoiceField,
+                          CheckboxSelectMultiple,
+                          Textarea,
+                          ChoiceField,
+                          RadioSelect,
+) 
 
 
 class VenueForm(ModelForm):
@@ -21,7 +30,7 @@ class ReviewForm(ModelForm):
     description = CharField(required=True, label="Opis:", widget=Textarea(attrs={'class':' flex mt-1 mb-3 shadow w-full leading-tight'}))
     class Meta:
         model = Review
-        exclude = {'user', 'venue', 'rating'}
+        exclude = ['user', 'venue', 'rating']
         
 class RatingForm(ModelForm):
     CHOICES = [
@@ -76,3 +85,40 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ['text']
+        
+        
+class MenuForm(ModelForm):
+    name = CharField(required=True,
+                     label="Nazwa top",
+                     widget=TextInput(
+                         attrs={'class':'bg-red flex mt-1 mb-3 shadow w-full leading-tight'}
+                         )
+                     )
+    description = CharField(required=False,
+                            label="Opis top",
+                            widget=TextInput(
+                                attrs={'class':'bg-red flex mt-1 mb-3 shadow w-full leading-tight'}
+                                )
+                            )
+
+    class Meta:
+        model = Menu
+        exclude = ['venue']
+        
+class MenuItemsForm(ModelForm):
+    name = CharField(required=False,
+                     label="Nazwa bottom",
+                     widget=TextInput(
+                         attrs={'class':' flex mt-1 mb-3 shadow w-full leading-tight'}
+                         )
+                     )
+    description = CharField(required=False,
+                            label="Opis Itemu",
+                            widget=TextInput(
+                                attrs={'class':' flex mt-1 mb-3 shadow w-full leading-tight'}
+                                )
+                            )
+
+    class Meta:
+        model = MenuItems
+        exclude = ['menu, price']

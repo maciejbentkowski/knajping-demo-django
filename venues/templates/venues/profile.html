@@ -52,8 +52,6 @@
                                 <a class=" py-1 px-3 block" href="{% url 'venues:delete-venue' venue.id %}">Usuń</a>
                             </button>
                         </div>
-                        
-
                     </div>
                 </li>
                 {% endfor %}
@@ -70,7 +68,6 @@
             <div class="col-span-8 border-b py-2 px-7" >
                 <div class="col-span-6">
                     <a class="italic text-lg" href="{% url 'venues:detail' review.venue.id %}">{{ review.venue }}</a>
-
                 </div>
                 <div class="col-span-2">Rating: {{review.avg_rating}}</div>
                 <div class="col-start-2 text-center col-span-6 flex-col px-3 pb-3 mt-5">
@@ -81,11 +78,9 @@
                         {{ review.description}}
                     </div>
                 </div>
-            </div>
-                
+            </div>  
             {% endfor %}    
         </div>
-
     </div>
 </div>
 

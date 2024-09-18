@@ -1,12 +1,23 @@
-from django.shortcuts import render, redirect
+from typing import Any
+from django.db.models.query import QuerySet
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Venue, Comment, Rating, Menu, Review
-from .forms import VenueForm, CommentForm, ReviewForm, RatingForm
+
+from .models import (Venue,
+                     Comment,
+                     Rating,
+                     Review,
+                     Menu,)
+from .forms import (VenueForm,
+                    CommentForm,
+                    ReviewForm,
+                    RatingForm,
+                    MenuForm,)
 
 
 def create_session(request):
@@ -138,18 +149,17 @@ def create_venue(request):
 def update_venue(request, pk):
     purpose = "Edytuj"
     venue = Venue.objects.get(id=pk)
-    form = VenueForm(instance=venue)
+    venue_form = VenueForm(instance=venue)
     if venue.owner != request.user:
         messages.error(request, "You can only edit your venues")
         return redirect('venues:index')
-        
     if request.method == 'POST':
-        form = VenueForm(request.POST, instance=venue)
-        if form.is_valid():
-            form.save()
+        venue_form = VenueForm(request.POST, instance=venue)
+        if venue_form.is_valid():
+            venue_form.save()
             return redirect('venues:profile', pk=request.user.id)
 
-    context = {'form': form, 'purpose': purpose}
+    context = {'venue_form': venue_form, 'purpose': purpose, 'venue':venue}
     return render(request, 'venues/venue_form.html', context)
 
 
@@ -180,6 +190,9 @@ def create_review(request, pk):
     if (venue.owner != request.user) and venue.is_active == False:
         messages.error(request, "Nie mozesz ocenić nieaktywnej restauracji")
         return redirect('venues:index')
+    elif (venue.owner == request.user):
+        messages.error(request, "Nie mozesz ocenić swojej restauracji")
+        return redirect('venues:detail', pk=pk)
     try:
         review = Review.objects.get(user=request.user.id, venue=pk)
         rating = Rating.objects.get(id = review.rating.id)
@@ -190,7 +203,7 @@ def create_review(request, pk):
     rating_form = RatingForm(instance = rating)
     if request.method == 'POST':
         rating_form = RatingForm(request.POST, instance=rating)
-        review_form = ReviewForm(request.POST, instance =review)
+        review_form = ReviewForm(request.POST, instance=review)
         if rating_form.is_valid():
             rating = rating_form.save()
             rating.save()
@@ -211,3 +224,15 @@ def profile(request, pk):
     avg_rating = Review.avg_rating
     context = {'venues': venues, 'reviews': reviews, 'avg_rating':avg_rating}
     return render(request, 'venues/profile.html', context)
+
+
+def menu_list(request, venue):
+    venue = Venue.objects.get(id=venue)
+    menus = venue.menus.all()
+    menu_form = MenuForm()
+
+        
+        
+    context = {'venue': venue, 'menus': menus, 'menu_form': menu_form,}
+    return render(request, 'venues/menu_list.html', context)
+

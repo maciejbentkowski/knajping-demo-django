@@ -121,7 +121,7 @@ class Rating(models.Model):
 class Menu(models.Model):
     name = models.CharField()
     description = models.TextField()
-    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='menus')
     
     def __str__(self):
         return f"{self.name}  ({self.description})"
