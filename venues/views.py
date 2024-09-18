@@ -226,13 +226,33 @@ def profile(request, pk):
     return render(request, 'venues/profile.html', context)
 
 
-def menu_list(request, venue):
-    venue = Venue.objects.get(id=venue)
+def menu_list(request, pk):
+    venue = Venue.objects.get(id=pk)
     menus = venue.menus.all()
     menu_form = MenuForm()
+    
+    if request.method == 'POST' and 'menu_add' in request.POST:
+        Menu.objects.create(
+            name = request.POST.get('name'),
+            description=request.POST.get('description'),
+            venue=venue
+            )
+        return redirect('venues:menu', pk=venue.pk)
 
         
         
     context = {'venue': venue, 'menus': menus, 'menu_form': menu_form,}
-    return render(request, 'venues/menu_list.html', context)
+    return render(request, 'venues/menu.html', context)
+
+def delete_menu(request, menu):
+    pass
+
+def delete_menu(request, pk):
+    menu = Menu.objects.get(id=pk)
+    if request.method == 'POST':
+        menu.delete()
+        return redirect('venues:menu', pk = menu.venue.pk)
+    else:
+        return render(request, 'venues/detail.html') 
+
 

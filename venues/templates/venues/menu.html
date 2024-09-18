@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+<div>
+    {%for menu in menus%}
+    <div>
+        {{menu.name}}
+        <form method="POST" action="{% url 'venues:delete-menu' menu.id %}">
+            {% csrf_token %}
+            <input class="mt-2 text-red-700" type="submit" value="Delete"></input>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ menu_form.as_div }}
+    <button type="submit" name="menu_add" class="border bg-green-800 hover:bg-green-500 text-white my-4 rounded">
+        <div class=" py-1 px-3 block">
+            Dodaj
+        </div>                  
+    </button>
+</form>
+
+
+
+{% endblock content %}

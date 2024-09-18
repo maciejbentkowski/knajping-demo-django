@@ -21,6 +21,9 @@ urlpatterns = [
     
     path('venues/<str:pk>/review/', views.create_review, name='create-review'),
     
-    path('profile/<str:pk>/', views.profile, name='profile'), 
+    path('profile/<str:pk>/', views.profile, name='profile'),
+    
+    path('venues/<int:pk>/menu', views.menu_list, name='menu'),
+    path('delete-menu/<str:pk>/', views.delete_menu, name='delete-menu')
     
 ]
