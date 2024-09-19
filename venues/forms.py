@@ -83,6 +83,12 @@ class RatingForm(ModelForm):
         fields = "__all__"
         
 class CommentForm(ModelForm):
+    text = CharField(required=True,
+                     label=False,
+                     widget=TextInput(
+                         attrs={'placeholder':"Weź udział w dyskusji", 'class':'flex mt-1 mb-3 shadow w-full leading-tight'}
+                         ))
+    
     class Meta:
         model = Comment
         fields = ['text']
@@ -90,15 +96,15 @@ class CommentForm(ModelForm):
         
 class MenuForm(ModelForm):
     name = CharField(required=True,
-                     label="Nazwa top",
+                     label="Nazwa",
                      widget=TextInput(
-                         attrs={'class':'bg-red flex mt-1 mb-3 shadow w-full leading-tight'}
+                         attrs={'class':'flex mt-1 mb-3 shadow w-full leading-tight'}
                          )
                      )
     description = CharField(required=False,
-                            label="Opis top",
+                            label="Opis",
                             widget=TextInput(
-                                attrs={'class':'bg-red flex mt-1 mb-3 shadow w-full leading-tight'}
+                                attrs={'class':'flex mt-1 mb-3 shadow w-full leading-tight'}
                                 )
                             )
 
@@ -108,13 +114,13 @@ class MenuForm(ModelForm):
         
 class MenuItemsForm(ModelForm):
     name = CharField(required=False,
-                     label="Nazwa bottom",
+                     label="Nazwa",
                      widget=TextInput(
                          attrs={'class':' flex mt-1 mb-3 shadow w-full leading-tight'}
                          )
                      )
     description = CharField(required=False,
-                            label="Opis Itemu",
+                            label="Opis",
                             widget=TextInput(
                                 attrs={'class':' flex mt-1 mb-3 shadow w-full leading-tight'}
                                 )

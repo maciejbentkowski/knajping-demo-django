@@ -3,37 +3,57 @@
 
 {% block content %}
 
-<div>
+<div class="p-3">
     {%for menu in menus%}
     <div>
-        {{menu.name}}
-        {% for item in menu.menu_items.values%}
-        <ul>
-            <li>
-                {{item.name}}{{item.price}}
-            </li>
-        </ul>
-        {% endfor %}
+        <div class="border-y py-2 mt-3">
+            <div class="flex">
+                <div class="min-w-80">
+                    {{menu.name}}
+                </div>
+                <div class="ml-2">
+                    <a href="{% url 'venues:menu-add-items' venue.id menu.id %}">Edit Items</a>
+                </div>
+                <div class="px-auto my-auto ml-5 ">
+                    <form method="POST" action="{% url 'venues:delete-menu' menu.id %}">
+                        {% csrf_token %}
+                        <input class=" text-red-700" type="submit" value="Delete"></input>
+                    </form>
+                </div>
+            </div>
 
-        <a href="{% url 'venues:menu-add-items' venue.id menu.id %}">Add Items</a>
-        <form method="POST" action="{% url 'venues:delete-menu' menu.id %}">
-            {% csrf_token %}
-            <input class="mt-2 text-red-700" type="submit" value="Delete"></input>
-        </form>
+            <div class="text-xs">
+                {{menu.description}}
+            </div>
+        </div>
+
+        <div class="ml-5">
+        {% for item in menu.menu_items.values%}
+
+            <ul>
+                <li>
+                    {{item.name}}  {{item.price}}
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
+
     </div>
     {% endfor %}
 </div>
 
+<div class="p-3">
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ menu_form.as_div }}
+        <button type="submit" name="menu_add" class="border bg-green-800 hover:bg-green-500 text-white my-4 rounded">
+            <div class=" py-1 px-3 block">
+                Dodaj
+            </div>                  
+        </button>
+    </form>
+</div>
 
-<form method="POST" action="">
-    {% csrf_token %}
-    {{ menu_form.as_div }}
-    <button type="submit" name="menu_add" class="border bg-green-800 hover:bg-green-500 text-white my-4 rounded">
-        <div class=" py-1 px-3 block">
-            Dodaj
-        </div>                  
-    </button>
-</form>
 
 
 
