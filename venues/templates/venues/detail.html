@@ -37,36 +37,38 @@
            
     </div>
     <div class="border col-span-12 p-3">
-        <div class="mt-1 pl-2 col-span-8">
+        <div class="mt-1 pl-2">
             <div class="text-center text-lg mb-4">
                 MENU
             </div>
             {% for menu in menus %}
-            <div class="my-3 text-2xl">
-                {{ menu.name }}
-                <div class="text-xs">
-                    {{menu.description}}
+                <div class="my-3 text-2xl">
+                    {{ menu.name }}
+                    <div class="text-xs italic">
+                        {{menu.description}}
+                    </div>
                 </div>
-            </div>
-
-                {% for item in menu.menu_items_all %}
-                <div class="pl-5 divide-x">
-                    <ul>
-                        <li>
-                            <div class="min-w-80">
-                                <div class="text-lg">
-                                    {{item.name}}:                  
-                                    <div class="float-end mr-5">{{item.price}} </div>
-                                </div>
-                                <div class="text-xs">
-                                    {{item.description}}
-                                </div>
-                            </div>  
-    
-                        </li>
-                    </ul>
+                <div class="grid grid-cols-6 pl-5 gap-x-5">
+                    {% for item in menu.menu_items_all %}
+                            <ul class="col-span-3">
+                                <li class="divide-x">
+                                    <div class="min-w-80 divide-y-2">
+                                        <div class="text-lg ">
+                                            <div>
+                                                {{item.name}}:     
+                                                <div class="float-end mr-5">
+                                                    {{item.price}} 
+                                                </div>
+                                            </div>             
+                                        </div>
+                                        <div class="text-xs mb-4 italic">
+                                            {{item.description}}
+                                        </div>
+                                    </div>  
+                                </li>
+                            </ul>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             {% endfor %}
         </div>
     </div>
