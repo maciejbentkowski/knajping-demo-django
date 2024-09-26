@@ -1,11 +1,14 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+import secrets
 
 import dj_database_url
 
 
-load_dotenv()
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    default=secrets.token_urlsafe(nbytes=64),
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +18,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    default=secrets.token_urlsafe(nbytes=64),
+)
 
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
@@ -91,7 +97,7 @@ WSGI_APPLICATION = 'knajping.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-'''
+
 if IS_HEROKU_APP:
     # In production on Heroku the database configuration is derived from the `DATABASE_URL`
     # environment variable by the dj-database-url package. `DATABASE_URL` will be set
@@ -118,17 +124,6 @@ else:
         },
     }
 
-'''
-DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "knajping",
-            "USER": "knajping",
-            "PASSWORD": "mypassword",
-            "HOST": "db",
-            "PORT": "5432",
-        },
-    }
 
 
 
@@ -189,5 +184,12 @@ STORAGES = {
     },
 }
 
-AZURE_ACCOUNT_NAME = os.getenv('AZURE_STORAGE_ACCOUNT')
-AZURE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_ACCOUNT_KEY')
+
+AZURE_ACCOUNT_NAME = os.environ.get(
+    "AZURE_STORAGE_ACCOUNT",
+    default=secrets.token_urlsafe(nbytes=64),
+)
+AZURE_ACCOUNT_KEY = os.environ.get(
+    "AZURE_STORAGE_ACCOUNT_KEY",
+    default=secrets.token_urlsafe(nbytes=64),
+)
