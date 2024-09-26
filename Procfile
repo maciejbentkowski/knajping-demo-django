@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn knajping.wsgi --log-file -
+web: gunicorn knajping.wsgi
