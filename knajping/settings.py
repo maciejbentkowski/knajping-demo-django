@@ -22,6 +22,7 @@ SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
     default=secrets.token_urlsafe(nbytes=64),
 )
+DEBUG_PROPAGATE_EXCEPTIONS = True
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -159,11 +160,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'theme/static_src/src'),# Katalog zawierający styles/style.css
-]
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 
 # Default primary key field type
@@ -182,7 +181,7 @@ STORAGES = {
         },
     },
     "staticfiles": {
-        "BACKEND": 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        "BACKEND": 'whitenoise.storage.CompressedStaticFilesStorage',
     },
 }
 
@@ -195,3 +194,7 @@ AZURE_ACCOUNT_KEY = os.environ.get(
     "AZURE_STORAGE_ACCOUNT_KEY",
     default=secrets.token_urlsafe(nbytes=64),
 )
+
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
