@@ -1,11 +1,15 @@
 import pytest
-from django.contrib.auth import get_user_model
-from venues.models import Venue, Category, Comment
+from venues.models import Venue, Category, Comment, Rating, Review
 from venues.tests.factories import (UserFactory, 
                                     VenueFactory, 
                                     RatingFactory, 
                                     CategoryFactory,
-                                    CommentFactory)
+                                    CommentFactory,
+                                    ReviewFactory
+                                    )
+
+
+from django.core.exceptions import ValidationError
 
 @pytest.mark.django_db()
 class TestVenueModel():
@@ -16,30 +20,9 @@ class TestVenueModel():
       assert Venue.objects.all().count() == 1
    
    def test_str_method(self):
-      user = UserFactory()
       venue = VenueFactory(name="Test Venue")
       assert str(venue) == "Test Venue"
       
-   def test_rating_method(self):
-      venue = VenueFactory()
-      rating1 = RatingFactory(venue=venue)
-      rating2 = RatingFactory(venue=venue)
-        
-      ratings = venue.rating()
-        
-      assert ratings.count() == 2
-      assert list(ratings) == [rating1, rating2]
-      
-   def test_average_rating(self):
-      venue = VenueFactory()
-      RatingFactory(venue = venue, rating = 4)
-      RatingFactory(venue = venue, rating = 2)
-      expected_average = 3.0  # (4 + 2) / 2
-      assert venue.average_rating() == expected_average
-      
-   def test_average_rating_no_ratings(self):
-        venue = VenueFactory()
-        assert venue.average_rating() is None
    
    def test_owner_foreign_key(self):
       user = UserFactory()
@@ -85,12 +68,40 @@ class TestCommentModel():
       comment = CommentFactory(text="Test Comment")
       assert str(comment) == "Test Comment"
       
-   def test_user_rating(self):
-      user = UserFactory()
-      venue = VenueFactory()
-      comment = CommentFactory(venue = venue, user=user)
-      RatingFactory(user = user, venue=venue, rating=3)
+@pytest.mark.django_db()   
+class TestRatingModel():
+   
+   def setUp(self):
+      self.rating = RatingFactory()
+   
+   def test_rating_validators(self):
+      """Test that the validators work for rating fields"""  
+      rating = RatingFactory.build()
+      rating.quality_rating = 7
+      with pytest.raises(ValidationError):
+         rating.full_clean() 
+
+@pytest.mark.django_db()   
+class TestReviewModel():
+   
+   def test_review_creation(self):
+      ReviewFactory()
       
-      assert comment.user_rating() == 3
+      assert Review.objects.all().count() == 1
+      
+   def test_review_avg_rating(self):
+      rating = RatingFactory(
+         quality_rating=5,
+         service_rating=3,
+         atmosphere_rating=3,
+         value_rating=5,
+         availability_rating=2,
+         uniqueness_rating=3,
+      )
+      
+      review = ReviewFactory(rating = rating)
+      
+      expected_avg_rating = round((5 + 3 + 3 + 5 + 2 + 3) / 6, 2)
+      assert review.avg_rating() == expected_avg_rating
       
       

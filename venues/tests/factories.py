@@ -1,5 +1,5 @@
 import factory
-from venues.models import Venue, Category, Rating, Comment
+from venues.models import Venue, Category, Rating, Comment, Review
 from django.contrib.auth import get_user_model
 from datetime import datetime
 
@@ -38,9 +38,12 @@ class RatingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Rating
         
-    rating = factory.Faker('random_int', min=1, max=6)
-    user = factory.SubFactory(UserFactory)
-    venue = factory.SubFactory(VenueFactory)
+    quality_rating = factory.Faker('random_int', min=1, max=6)
+    service_rating = factory.Faker('random_int', min=1, max=6)
+    atmosphere_rating = factory.Faker('random_int', min=1, max=6)
+    value_rating = factory.Faker('random_int', min=1, max=6)
+    availability_rating = factory.Faker('random_int', min=1, max=6)
+    uniqueness_rating = factory.Faker('random_int', min=1, max=6)
     
 class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -49,3 +52,16 @@ class CommentFactory(factory.django.DjangoModelFactory):
     created_at = datetime.now()
     user = factory.SubFactory(UserFactory)
     venue = factory.SubFactory(VenueFactory)
+    
+    
+class ReviewFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Review
+        
+    title = factory.Faker('text', max_nb_chars=25)
+    description = factory.Faker('text', max_nb_chars=150)
+    rating = factory.SubFactory(RatingFactory)
+    user = factory.SubFactory(UserFactory)
+    venue = factory.SubFactory(VenueFactory)
+    
+    
