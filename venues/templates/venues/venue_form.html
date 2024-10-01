@@ -11,14 +11,23 @@
 </div>
 <div class="grid grid-cols-7 mt-5 ">
     <div class="col-start-3 col-span-3 pl-4 py-4 rounded shadow border px-5 ">
-        <form method="POST" action="">
+        <div class="mb-3" >
+            <div>
+            {% if venue.primary_image %}
+                Primary image:
+                <img src={{venue.primary_image.url}}>
+            </div>  
+            {% else %}
+                {% if helper_text %}
+                <div class="text-xs">
+                    {{helper_text}}
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             {{venue_form}}
-            {% if helper_text %}
-            <div class="text-xs">
-                {{helper_text}}
-            </div>
-            {% endif %}
             <button type="submit" value="Submit" class="bg-green-800 hover:bg-green-500 text-white my-4 py-2 px-4 rounded">
                 {{purpose}}
             </button>

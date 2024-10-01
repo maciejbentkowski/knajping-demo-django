@@ -133,7 +133,7 @@ def create_venue(request):
     is_active_field.disabled = True
     is_active_field.widget = is_active_field.hidden_widget()
     if request.method == 'POST':
-        venue_form = VenueForm(request.POST)
+        venue_form = VenueForm(request.POST, request.FILES)
         if venue_form.is_valid():
             venue = venue_form.save(commit=False)
             venue.owner = request.user
@@ -153,7 +153,7 @@ def update_venue(request, pk):
         messages.error(request, "You can only edit your venues")
         return redirect('venues:index')
     if request.method == 'POST':
-        venue_form = VenueForm(request.POST, instance=venue)
+        venue_form = VenueForm(request.POST, request.FILES, instance=venue)
         if venue_form.is_valid():
             venue_form.save()
             return redirect('venues:profile', pk=request.user.id)

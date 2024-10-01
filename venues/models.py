@@ -21,6 +21,7 @@ class Venue(models.Model):
     owner = models.ForeignKey(User, 
                               on_delete=models.SET_DEFAULT,
                               default=None)
+    primary_image = models.FileField(upload_to='uploads/', default='/default_photo.webp')
     
     def __str__(self):
         return self.name
