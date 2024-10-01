@@ -1,5 +1,6 @@
 from pathlib import Path
 import environ
+import os
 import dj_database_url
 
 env = environ.Env(
@@ -13,8 +14,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
-IS_HEROKU_APP = "DYNO" in env("DYNO") and not "CI" in env("CI")
-
+IS_HEROKU_APP = "DYNO" in env('DYNO') and not "CI" in env("CI")
 if not IS_HEROKU_APP:
     DEBUG = True
 
