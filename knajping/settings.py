@@ -17,13 +17,14 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 IS_HEROKU_APP = "DYNO" in env('DYNO') and not "CI" in env("CI")
 if not IS_HEROKU_APP:
     DEBUG = True
-
-if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*"]
-    AZURE_CONTAINER = env('PROD_AZURE_CONTAINER')
-else:
     AZURE_CONTAINER = env('DEV_AZURE_CONTAINER')
     ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]
+else:
+    DEBUG = False
+    ALLOWED_HOSTS = ["*"]
+    AZURE_CONTAINER = env('PROD_AZURE_CONTAINER')
+
+
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
