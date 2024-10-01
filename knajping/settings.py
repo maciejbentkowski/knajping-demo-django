@@ -1,42 +1,29 @@
 from pathlib import Path
-import os
-import secrets
-
+import environ
 import dj_database_url
 
+env = environ.Env(
 
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    default=secrets.token_urlsafe(nbytes=64),
+    DEBUG=(bool, False)
 )
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(BASE_DIR / '.env')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    default=secrets.token_urlsafe(nbytes=64),
-)
-DEBUG_PROPAGATE_EXCEPTIONS = True
-IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
+IS_HEROKU_APP = "DYNO" in env("DYNO") and not "CI" in env("CI")
 
-# SECURITY WARNING: don't run with debug turned on in production!
 if not IS_HEROKU_APP:
-    DEBUG = False
-
+    DEBUG = True
 
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
+    AZURE_CONTAINER = env('PROD_AZURE_CONTAINER')
 else:
+    AZURE_CONTAINER = env('DEV_AZURE_CONTAINER')
     ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
@@ -95,15 +82,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'knajping.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 if IS_HEROKU_APP:
-    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
-    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
-    # automatically by Heroku when a database addon is attached to your Heroku app. See:
-    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres#application-config-vars
-    # https://github.com/jazzband/dj-database-url
     DATABASES = {
         "default": dj_database_url.config(
             env="DATABASE_URL",
@@ -116,19 +96,13 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": "knajping",
-            "USER": "knajping",
-            "PASSWORD": "mypassword",
+            "NAME": env('POSTGRES_DB'),
+            "USER": env('POSTGRES_USER'),
+            "PASSWORD": env('POSTGRES_PASSWORD'),
             "HOST": "db",
             "PORT": "5432",
         },
     }
-
-
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -157,26 +131,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
 
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.azure_storage.AzureStorage",
         "OPTIONS": {
-            "azure_container": "media",
+            "azure_container": AZURE_CONTAINER,
             "expiration_secs": 500,
         },
     },
@@ -185,15 +146,10 @@ STORAGES = {
     },
 }
 
+AZURE_ACCOUNT_NAME = env('AZURE_STORAGE_ACCOUNT')
+AZURE_ACCOUNT_KEY = env('AZURE_STORAGE_ACCOUNT_KEY')
 
-AZURE_ACCOUNT_NAME = os.environ.get(
-    "AZURE_STORAGE_ACCOUNT",
-    default=secrets.token_urlsafe(nbytes=64),
-)
-AZURE_ACCOUNT_KEY = os.environ.get(
-    "AZURE_STORAGE_ACCOUNT_KEY",
-    default=secrets.token_urlsafe(nbytes=64),
-)
+
 
 
 STATIC_URL = 'static/'

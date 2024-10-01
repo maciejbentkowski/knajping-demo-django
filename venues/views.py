@@ -1,6 +1,4 @@
-from typing import Any
-from django.db.models.query import QuerySet
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -12,8 +10,7 @@ from .models import (Venue,
                      Comment,
                      Rating,
                      Review,
-                     Menu,
-                     MenuItems,)
+                     Menu,)
 from .forms import (VenueForm,
                     CommentForm,
                     ReviewForm,
@@ -201,7 +198,7 @@ def create_review(request, pk):
     except:
         review = None
         rating = None
-    review_form = ReviewForm(instance =review)
+    review_form = ReviewForm(instance = review)
     rating_form = RatingForm(instance = rating)
     if request.method == 'POST':
         rating_form = RatingForm(request.POST, instance=rating)
