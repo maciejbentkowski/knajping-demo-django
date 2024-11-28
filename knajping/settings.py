@@ -1,10 +1,8 @@
 from pathlib import Path
 import environ
-import os
-import dj_database_url
+
 
 env = environ.Env(
-
     DEBUG=(bool, False)
 )
 
@@ -14,15 +12,10 @@ environ.Env.read_env(BASE_DIR / '.env')
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
-IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
-if IS_HEROKU_APP:
-    DEBUG = False
-    ALLOWED_HOSTS = ["*"]
-    AZURE_CONTAINER = env('PROD_AZURE_CONTAINER')
-else:
-    DEBUG = True
-    AZURE_CONTAINER = env('DEV_AZURE_CONTAINER')
-    ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]
+
+DEBUG = True
+
+ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0"]
 
 
 INSTALLED_APPS = [
@@ -83,26 +76,17 @@ WSGI_APPLICATION = 'knajping.wsgi.application'
 
 
 
-if IS_HEROKU_APP:
-    DATABASES = {
-        "default": dj_database_url.config(
-            env="DATABASE_URL",
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        ),
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": env('POSTGRES_DB'),
-            "USER": env('POSTGRES_USER'),
-            "PASSWORD": env('POSTGRES_PASSWORD'),
-            "HOST": "db",
-            "PORT": "5432",
-        },
-    }
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env('POSTGRES_DB'),
+        "USER": env('POSTGRES_USER'),
+        "PASSWORD": env('POSTGRES_PASSWORD'),
+        "HOST": "db",
+        "PORT": "5432",
+    },
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -135,21 +119,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STORAGES = {
     "default": {
-        "BACKEND": "storages.backends.azure_storage.AzureStorage",
-        "OPTIONS": {
-            "azure_container": AZURE_CONTAINER,
-            "expiration_secs": 500,
-        },
+        "BACKEND": 'whitenoise.storage.CompressedStaticFilesStorage',
     },
     "staticfiles": {
         "BACKEND": 'whitenoise.storage.CompressedStaticFilesStorage',
     },
 }
-
-AZURE_ACCOUNT_NAME = env('AZURE_STORAGE_ACCOUNT')
-AZURE_ACCOUNT_KEY = env('AZURE_STORAGE_ACCOUNT_KEY')
-
-
 
 
 STATIC_URL = 'static/'

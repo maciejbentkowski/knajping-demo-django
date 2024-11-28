@@ -1,13 +1,57 @@
-# Knajping - demo 
+# Knajping demo django application
 
-This is a demo version of a restaurant management application with the ability for guests to leave reviews.
+This is a Django application to manage restaurants by owners and review them by users
 
-## Usage
+## Requirements
 
-#### User can:
+- **Python**: 3.12
+- **Django**: 5.1
+- **PostgreSQL**: 16 or higher
 
-- Add a venue
-- Add a venue category
-- Add a menu to the venue
-- Add a review to a restaurant, including ratings in six categories
-- Check their reviews and venues in the user's profile
+## Getting Started
+
+### Installation
+
+1. **Clone the repository**:
+```bash
+git clone https://github.com/maciejbentkowski/knajping-demo-django.git
+
+cd knajping-demo-django
+```
+
+2. **Create a virtual environment and activate it**:
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. **Install dependencies**:
+```bash
+pip install -r requirements.txt
+```
+
+4. **Set up environment variables**:
+Ensure PostgreSQL is installed and running. Then run:
+```bash
+SECRET_KEY=your-secret-key
+```
+
+
+## Running the App
+
+
+Docker required:
+
+  ```
+  docker-compose up -d 
+  ```
+   
+Then, visit http://localhost:8000 in your browser.
+## Testing
+
+This app is set up with RSpec for testing. Run all tests with:
+
+```bash
+pytest
+```
+in app container
