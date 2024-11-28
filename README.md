@@ -30,8 +30,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. **Set up environment variables**:
-Ensure PostgreSQL is installed and running. Then run:
+4. **Set up environment variables** in .env file in the root directory of the project:
 ```bash
 SECRET_KEY=your-secret-key
 ```
